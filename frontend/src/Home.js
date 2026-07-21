@@ -192,9 +192,8 @@ function Home({ products = [], addToCart, clearCart, favorites, toggleFavorite, 
       {/* SEARCH-FIRST LANDING */}
       <div style={{
         position: "relative", 
-        height: "calc(100vh - 100px)", 
-        maxHeight: "850px",
-        minHeight: "520px",
+        height: "min(100vh, 850px)",
+        minHeight: "420px",
         width: "100%", 
         overflow: "hidden", 
         display: "flex", 
@@ -247,14 +246,14 @@ function Home({ products = [], addToCart, clearCart, favorites, toggleFavorite, 
                 onClick={openSearch}
                 onFocus={openSearch}
                 style={{
-                  width: "100%", padding: "18px 20px", paddingRight: "150px", backgroundColor: "#ffffff", border: "1px solid #d6dce5", borderRadius: "8px", color: "#1f2937", fontSize: "16px", fontWeight: "500", letterSpacing: "0.3px", outline: "none", transition: "all 0.3s ease", boxShadow: "0 12px 30px rgba(0,0,0,0.25)", cursor: "text"
+                  width: "100%", padding: "18px 20px", paddingRight: "110px", backgroundColor: "#ffffff", border: "1px solid #d6dce5", borderRadius: "8px", color: "#1f2937", fontSize: "16px", fontWeight: "500", letterSpacing: "0.3px", outline: "none", transition: "all 0.3s ease", boxShadow: "0 12px 30px rgba(0,0,0,0.25)", cursor: "text"
                 }}
               />
               <button 
                 type="button"
                 onClick={openSearch}
                 style={{
-                  position: "absolute", right: "6px", padding: "12px 24px", backgroundColor: "#f3b458", color: "#111827", border: "none", borderRadius: "6px", fontSize: "12px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1.5px", cursor: "pointer", transition: "all 0.3s ease"
+                  position: "absolute", right: "6px", padding: "10px 18px", backgroundColor: "#f3b458", color: "#111827", border: "none", borderRadius: "6px", fontSize: "12px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1.5px", cursor: "pointer", transition: "all 0.3s ease"
                 }}
               >
                 Search
@@ -302,7 +301,7 @@ function Home({ products = [], addToCart, clearCart, favorites, toggleFavorite, 
                     key={item._id} 
                     product={item} 
                     {...commonProps} 
-                    style={{ minWidth: "380px", height: "550px", fontSize: "18px" }} 
+                    style={{ minWidth: "280px", width: "80vw", height: "550px", fontSize: "18px" }} 
                   />
                ))}
             </div>
@@ -311,7 +310,7 @@ function Home({ products = [], addToCart, clearCart, favorites, toggleFavorite, 
 
       {/* THE VAULT SCARCITY */}
       {vaultItems.length > 0 && (
-        <div ref={addToRevealRefs} className="reveal section-dark" style={{ padding: "150px 5%", background: "linear-gradient(180deg, #050505 0%, #000 100%)", position: "relative", overflow: "hidden" }}>
+        <div ref={addToRevealRefs} className="reveal section-dark" style={{ padding: "80px 5%", background: "linear-gradient(180deg, #050505 0%, #000 100%)", position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", fontSize: "25vw", fontWeight: "900", color: "rgba(255,255,255,0.015)", pointerEvents: "none", whiteSpace: "nowrap", letterSpacing: "100px" }}>VAULT</div>
           
           <div style={{ textAlign: "center", marginBottom: "100px", position: "relative", zIndex: 10 }}>

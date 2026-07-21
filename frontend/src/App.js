@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation 
 import { useState, useEffect, useMemo, useCallback } from "react";
 
 import Home from "./Home";
+import "./responsive.css";
 import Shop from "./Shop";
 import Cart from "./Cart";
 import ProductDetail from "./ProductDetail";
