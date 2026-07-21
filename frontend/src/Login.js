@@ -101,31 +101,6 @@ function Login({ setUser }) {
           >
             {loading ? "Authenticating..." : "Login"}
           </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              const demoUser = { _id: "demo123", name: "Yugam", email: "yugambatheja5@gmail.com", role: "admin" };
-              localStorage.setItem("token", "demo_token_123");
-              setUser(demoUser);
-              navigate("/profile");
-            }}
-            style={{
-              padding: "14px",
-              backgroundColor: "rgba(212, 175, 55, 0.1)",
-              color: "#d4af37",
-              border: "1px solid #d4af37",
-              borderRadius: "8px",
-              fontSize: "13px",
-              fontWeight: "800",
-              cursor: "pointer",
-              textTransform: "uppercase",
-              letterSpacing: "1px",
-              transition: "all 0.3s ease"
-            }}
-          >
-            ⚡ Quick Demo Login
-          </button>
         </form>
 
         <p style={{ textAlign: "center", marginTop: "30px", fontSize: "15px", color: "#666" }}>
