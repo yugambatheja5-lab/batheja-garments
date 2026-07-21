@@ -17,6 +17,7 @@ import HelpCentre from "./HelpCentre";
 import AtelierAI from "./components/AtelierAI";
 import SearchOverlay from "./components/SearchOverlay";
 import HelpCorner from "./components/HelpCorner";
+import { products as fallbackProducts } from "./data/products";
 
 // --- Sub-components extracted to prevent re-creation on App render ---
 
@@ -125,7 +126,7 @@ const Breadcrumbs = () => {
   if (location.pathname === "/") return null;
 
   return (
-    <div style={{ padding: "20px 50px", backgroundColor: "#fcfcfc", borderBottom: "1px solid #eee", fontSize: "11px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "2px", color: "var(--text-muted)" }}>
+    <div className="breadcrumbs-container" style={{ padding: "16px 40px", backgroundColor: "#fcfcfc", borderBottom: "1px solid #eee", fontSize: "11px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "2px", color: "var(--text-muted)", overflowX: "auto", whiteSpace: "nowrap" }}>
       <Link to="/" style={{ color: "inherit", textDecoration: "none" }}>Home</Link>
       {pathnames.map((name, index) => {
         const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
@@ -156,20 +157,14 @@ const CartPreview = ({ cart, linkStyle, bubbleStyle }) => {
       onMouseLeave={() => setIsHovered(false)}
       style={{ position: "relative", display: "flex", alignItems: "center" }}
     >
-      <Link to="/cart" style={{ ...linkStyle, fontSize: "12px" }} className="nav-pill">
-         <span id="nav-cart-icon" style={{ fontSize: "22px" }}>👜</span>
-         <span>Cart</span>
+      <Link to="/cart" style={{ ...linkStyle, fontSize: "12px", padding: "8px 12px" }} className="nav-pill">
+         <span id="nav-cart-icon" style={{ fontSize: "20px" }}>👜</span>
+         <span className="cart-text-label" style={{ display: "none" }}>Cart</span>
          <span style={bubbleStyle}>{cart.reduce((t, i) => t + i.qty, 0)}</span>
       </Link>
       
       {isHovered && cart.length > 0 && (
-        <div style={{ 
-          position: "absolute", top: "100%", right: 0, width: "350px", backgroundColor: "#fff", 
-          boxShadow: "0 30px 60px rgba(0,0,0,0.2)", padding: "30px", zIndex: 1001, border: "1px solid #eee",
-          animation: "luxuryFade 0.3s ease",
-          willChange: "transform, opacity",
-          color: "#111827"
-        }}>
+        <div className="cart-preview-popover">
           <p style={{ margin: "0 0 20px 0", fontSize: "12px", fontWeight: "900", letterSpacing: "2px", textTransform: "uppercase", borderBottom: "1px solid #e5e7eb", paddingBottom: "15px", color: "#111827" }}>Cart Preview</p>
           <div style={{ maxHeight: "300px", overflowY: "auto", marginBottom: "20px" }}>
             {cart.slice(0, 3).map(item => (
@@ -197,21 +192,6 @@ const CartPreview = ({ cart, linkStyle, bubbleStyle }) => {
 };
 
 // --- Constant Styles moved out of component to prevent re-definitions ---
-const navStyle = {
-  display: "grid",
-  gridTemplateColumns: "auto 1fr auto",
-  alignItems: "center",
-  padding: "0 40px",
-  height: "100px",
-  background: "#131921",
-  color: "#f9fafb",
-  position: "sticky",
-  top: 0,
-  zIndex: 1000,
-  boxShadow: "0 8px 22px rgba(0,0,0,0.2)",
-  borderBottom: "1px solid rgba(255,255,255,0.12)"
-};
-
 const linkStyle = {
   color: "var(--text-main-inv)",
   textDecoration: "none",
@@ -219,27 +199,27 @@ const linkStyle = {
   fontSize: "13px",
   textTransform: "uppercase",
   letterSpacing: "3px",
-  padding: "10px 20px",
+  padding: "10px 18px",
   transition: "color 0.3s ease",
   cursor: "pointer",
   background: "rgba(255,255,255,0.04)",
   display: "flex",
   alignItems: "center",
-  gap: "10px"
+  gap: "8px"
 };
 
 const bubbleStyle = {
   background: "#d4a656",
   color: "#131921",
   fontSize: "11px",
-  minWidth: "22px",
-  height: "22px",
+  minWidth: "20px",
+  height: "20px",
   borderRadius: "50%",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   fontWeight: "900",
-  marginLeft: "5px"
+  marginLeft: "4px"
 };
 
 const AppLayout = ({ 
@@ -255,8 +235,8 @@ const AppLayout = ({
 
   return (
     <>
-      <nav style={navStyle}>
-        <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+      <nav className="main-navbar">
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="mobile-menu-btn"
@@ -265,20 +245,20 @@ const AppLayout = ({
               border: "1px solid rgba(255,255,255,0.2)",
               borderRadius: "4px",
               color: "#fff",
-              fontSize: "22px",
-              padding: "6px 12px",
+              fontSize: "20px",
+              padding: "5px 10px",
               cursor: "pointer"
             }}
           >
             {isMobileMenuOpen ? "✕" : "☰"}
           </button>
-          <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '15px' }}>
-            <img src="/logo.png" alt="BELVEDERE" style={{ height: "45px" }} />
-            <span style={{ fontSize: "22px", fontWeight: "900", letterSpacing: "4px", color: "var(--text-main-inv)" }}>BELVEDERE</span>
+          <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <img src="/logo.png" alt="BELVEDERE" className="brand-logo-img" />
+            <span className="brand-logo-text">BELVEDERE</span>
           </Link>
         </div>
 
-        <div className="desktop-nav-links" style={{ marginLeft: "40px" }}>
+        <div className="desktop-nav-links" style={{ marginLeft: "30px" }}>
           <NavLinkDropdown label="Men" targetKey="Men" productsList={productsList} linkStyle={linkStyle} />
           <NavLinkDropdown label="Women" targetKey="Women" productsList={productsList} linkStyle={linkStyle} />
           <NavLinkDropdown label="Kids" targetKey="Kids" productsList={productsList} linkStyle={linkStyle} />
@@ -295,26 +275,27 @@ const AppLayout = ({
           )}
         </div>
 
-        <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "15px" }}>
+        <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "8px" }}>
 
           <button 
             onClick={() => setIsSearchOpen(true)}
-            style={{ ...linkStyle, fontSize: "12px", border: "none", background: "none", padding: "8px 10px" }}
+            style={{ ...linkStyle, fontSize: "12px", border: "none", background: "none", padding: "8px" }}
+            aria-label="Search"
           >
-             <span style={{ fontSize: "20px" }}>🔍</span>
+             <span style={{ fontSize: "18px" }}>🔍</span>
           </button>
 
-          <Link to="/favorites" style={{ ...linkStyle, fontSize: "12px", padding: "8px 12px" }} className="nav-pill">
-             <span id="nav-fav-icon" style={{ fontSize: "20px" }}>❤️</span>
+          <Link to="/favorites" style={{ ...linkStyle, fontSize: "12px", padding: "8px 10px" }} className="nav-pill" aria-label="Favorites">
+             <span id="nav-fav-icon" style={{ fontSize: "18px" }}>❤️</span>
              {favorites.length > 0 && <span style={{ ...bubbleStyle, background: "#ff4d4d" }}>{favorites.length}</span>}
           </Link>
 
           {user ? (
-            <Link to="/profile" style={{ ...linkStyle, fontSize: "12px", padding: "8px 12px", color: location.pathname === "/profile" ? "var(--champagne)" : "var(--text-main-inv)" }} className={`nav-pill ${location.pathname === "/profile" ? "nav-active" : ""}`}>
-               <span style={{ fontSize: "20px" }}>👤</span>
+            <Link to="/profile" style={{ ...linkStyle, fontSize: "12px", padding: "8px 10px", color: location.pathname === "/profile" ? "var(--champagne)" : "var(--text-main-inv)" }} className={`nav-pill ${location.pathname === "/profile" ? "nav-active" : ""}`} aria-label="Profile">
+               <span style={{ fontSize: "18px" }}>👤</span>
             </Link>
           ) : (
-            <Link to="/login" style={{ ...linkStyle, color: location.pathname === "/login" ? "var(--champagne)" : "var(--text-main-inv)", padding: "8px 14px" }} className={`nav-pill ${location.pathname === "/login" ? "nav-active" : ""}`}>Login</Link>
+            <Link to="/login" style={{ ...linkStyle, color: location.pathname === "/login" ? "var(--champagne)" : "var(--text-main-inv)", padding: "6px 12px", fontSize: "11px" }} className={`nav-pill ${location.pathname === "/login" ? "nav-active" : ""}`}>Login</Link>
           )}
 
           <CartPreview cart={cart} linkStyle={linkStyle} bubbleStyle={bubbleStyle} />
@@ -323,27 +304,15 @@ const AppLayout = ({
 
       {/* MOBILE SLIDE-OUT DRAWER */}
       {isMobileMenuOpen && (
-        <div style={{
-          position: "fixed",
-          inset: 0,
-          top: "100px",
-          backgroundColor: "#131921",
-          zIndex: 9999,
-          padding: "40px 30px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "25px",
-          overflowY: "auto",
-          borderTop: "1px solid rgba(255,255,255,0.1)"
-        }}>
-          <Link to="/shop" state={{ department: 'Men' }} onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "18px", fontWeight: "800", letterSpacing: "3px", textTransform: "uppercase" }}>MEN'S COLLECTION</Link>
-          <Link to="/shop" state={{ department: 'Women' }} onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "18px", fontWeight: "800", letterSpacing: "3px", textTransform: "uppercase" }}>WOMEN'S COLLECTION</Link>
-          <Link to="/shop" state={{ department: 'Kids' }} onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "18px", fontWeight: "800", letterSpacing: "3px", textTransform: "uppercase" }}>KIDS COLLECTION</Link>
-          <div style={{ height: "1px", backgroundColor: "rgba(255,255,255,0.1)", margin: "10px 0" }} />
-          <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} style={{ color: "var(--champagne)", textDecoration: "none", fontSize: "16px", fontWeight: "800", letterSpacing: "2px", textTransform: "uppercase" }}>ALL MASTERPIECES</Link>
-          <Link to="/favorites" onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "16px", fontWeight: "700" }}>FAVORITES ({favorites.length})</Link>
-          <Link to="/cart" onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "16px", fontWeight: "700" }}>BAG ({cart.length})</Link>
-          <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "16px", fontWeight: "700" }}>MY PROFILE</Link>
+        <div className="mobile-menu-drawer">
+          <Link to="/shop" state={{ department: 'Men' }} onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "16px", fontWeight: "800", letterSpacing: "2px", textTransform: "uppercase" }}>MEN'S COLLECTION</Link>
+          <Link to="/shop" state={{ department: 'Women' }} onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "16px", fontWeight: "800", letterSpacing: "2px", textTransform: "uppercase" }}>WOMEN'S COLLECTION</Link>
+          <Link to="/shop" state={{ department: 'Kids' }} onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "16px", fontWeight: "800", letterSpacing: "2px", textTransform: "uppercase" }}>KIDS COLLECTION</Link>
+          <div style={{ height: "1px", backgroundColor: "rgba(255,255,255,0.1)", margin: "5px 0" }} />
+          <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} style={{ color: "var(--champagne)", textDecoration: "none", fontSize: "15px", fontWeight: "800", letterSpacing: "2px", textTransform: "uppercase" }}>ALL MASTERPIECES</Link>
+          <Link to="/favorites" onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "15px", fontWeight: "700" }}>FAVORITES ({favorites.length})</Link>
+          <Link to="/cart" onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "15px", fontWeight: "700" }}>BAG ({cart.length})</Link>
+          <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "15px", fontWeight: "700" }}>MY PROFILE</Link>
           <Link to="/help" onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#aaa", textDecoration: "none", fontSize: "14px" }}>HELP & SUPPORT</Link>
         </div>
       )}
@@ -397,38 +366,38 @@ const AppLayout = ({
 
       <HelpCorner />
 
-      <footer style={{ background: "#131921", padding: "80px 8%", borderTop: "1px solid rgba(255,255,255,0.08)", marginTop: "120px" }}>
+      <footer style={{ background: "#131921", padding: "50px 5%", borderTop: "1px solid rgba(255,255,255,0.08)", marginTop: "60px" }}>
         <div className="responsive-footer-grid">
           <div>
-            <h3 style={{ fontSize: "24px", fontWeight: "900", letterSpacing: "6px", color: "#fff", marginBottom: "30px" }}>BELVEDERE</h3>
-            <p style={{ color: "#666", lineHeight: "1.8", maxWidth: "300px" }}>Architecting the future of high-fidelity acquisition journeys for the modern icon.</p>
+            <h3 style={{ fontSize: "22px", fontWeight: "900", letterSpacing: "5px", color: "#fff", marginBottom: "20px" }}>BELVEDERE</h3>
+            <p style={{ color: "#888", lineHeight: "1.6", maxWidth: "300px", fontSize: "13px" }}>Architecting the future of high-fidelity acquisition journeys for the modern icon.</p>
           </div>
           <div>
-             <p style={{ fontSize: "12px", fontWeight: "900", color: "#d4af37", letterSpacing: "3px", marginBottom: "25px", textTransform: "uppercase" }}>Collections</p>
-             <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-               <Link to="/shop" style={{ color: "#888", textDecoration: "none", fontSize: "14px" }}>Masterpieces</Link>
-               <Link to="/shop" style={{ color: "#888", textDecoration: "none", fontSize: "14px" }}>The Vault</Link>
-               <Link to="/shop" style={{ color: "#888", textDecoration: "none", fontSize: "14px" }}>New Arrivals</Link>
+             <p style={{ fontSize: "12px", fontWeight: "900", color: "#d4af37", letterSpacing: "3px", marginBottom: "15px", textTransform: "uppercase" }}>Collections</p>
+             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+               <Link to="/shop" style={{ color: "#aaa", textDecoration: "none", fontSize: "13px" }}>Masterpieces</Link>
+               <Link to="/shop" style={{ color: "#aaa", textDecoration: "none", fontSize: "13px" }}>The Vault</Link>
+               <Link to="/shop" style={{ color: "#aaa", textDecoration: "none", fontSize: "13px" }}>New Arrivals</Link>
              </div>
           </div>
           <div>
-             <p style={{ fontSize: "12px", fontWeight: "900", color: "#d4af37", letterSpacing: "3px", marginBottom: "25px", textTransform: "uppercase" }}>Acquisition</p>
-             <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-               <Link to="/help" style={{ color: "#888", textDecoration: "none", fontSize: "14px" }}>Shipping Guide</Link>
-               <Link to="/help" style={{ color: "#888", textDecoration: "none", fontSize: "14px" }}>Masterpiece Return</Link>
-               <Link to="/help" style={{ color: "#888", textDecoration: "none", fontSize: "14px" }}>Consultation</Link>
+             <p style={{ fontSize: "12px", fontWeight: "900", color: "#d4af37", letterSpacing: "3px", marginBottom: "15px", textTransform: "uppercase" }}>Acquisition</p>
+             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+               <Link to="/help" style={{ color: "#aaa", textDecoration: "none", fontSize: "13px" }}>Shipping Guide</Link>
+               <Link to="/help" style={{ color: "#aaa", textDecoration: "none", fontSize: "13px" }}>Masterpiece Return</Link>
+               <Link to="/help" style={{ color: "#aaa", textDecoration: "none", fontSize: "13px" }}>Consultation</Link>
              </div>
           </div>
           <div>
-             <p style={{ fontSize: "12px", fontWeight: "900", color: "#d4af37", letterSpacing: "3px", marginBottom: "25px", textTransform: "uppercase" }}>Support</p>
-             <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-               <Link to="/help" style={{ color: "#888", textDecoration: "none", fontSize: "14px" }}>Help Centre</Link>
-               <Link to="/profile" style={{ color: "#888", textDecoration: "none", fontSize: "14px" }}>Order Status</Link>
-               <Link to="/help" style={{ color: "#888", textDecoration: "none", fontSize: "14px" }}>Contact Atelier</Link>
+             <p style={{ fontSize: "12px", fontWeight: "900", color: "#d4af37", letterSpacing: "3px", marginBottom: "15px", textTransform: "uppercase" }}>Support</p>
+             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+               <Link to="/help" style={{ color: "#aaa", textDecoration: "none", fontSize: "13px" }}>Help Centre</Link>
+               <Link to="/profile" style={{ color: "#aaa", textDecoration: "none", fontSize: "13px" }}>Order Status</Link>
+               <Link to="/help" style={{ color: "#aaa", textDecoration: "none", fontSize: "13px" }}>Contact Atelier</Link>
              </div>
           </div>
         </div>
-        <div style={{ marginTop: "100px", paddingTop: "40px", borderTop: "1px solid rgba(255,255,255,0.02)", textAlign: "center", color: "#333", fontSize: "10px", fontWeight: "900", letterSpacing: "2px" }}>
+        <div style={{ marginTop: "50px", paddingTop: "25px", borderTop: "1px solid rgba(255,255,255,0.05)", textAlign: "center", color: "#666", fontSize: "10px", fontWeight: "800", letterSpacing: "2px" }}>
           © 2026 BATHEJA GARMENTS | PRIVACY • TERMS • SECURITY
         </div>
       </footer>
@@ -466,11 +435,17 @@ function App() {
   const fetchProducts = useCallback(async () => {
     try {
       const res = await fetch("/api/products");
-      const data = await res.json();
-      if (res.ok) setProductsList(data);
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setProductsList(data);
+          return;
+        }
+      }
     } catch (err) {
-      console.error("Central Discovery Failed:", err);
+      console.error("Central Discovery Failed, using static catalog:", err);
     }
+    setProductsList(fallbackProducts);
   }, []);
 
   useEffect(() => {

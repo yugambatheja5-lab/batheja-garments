@@ -227,6 +227,93 @@ code {
   display: none !important;
 }
 
+/* Responsive Nav Header & Cart Popover */
+.main-navbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 0 40px;
+  height: 100px;
+  background: var(--obsidian);
+  color: var(--text-main-inv);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.2);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  transition: all 0.3s ease;
+}
+
+.brand-logo-img {
+  height: 45px;
+  transition: height 0.3s ease;
+}
+
+.brand-logo-text {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: var(--text-main-inv);
+  transition: font-size 0.3s ease;
+}
+
+.cart-preview-popover {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 350px;
+  max-width: calc(100vw - 20px);
+  background-color: #fff;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+  padding: 24px;
+  z-index: 1001;
+  border: 1px solid #eee;
+  animation: luxuryFade 0.3s ease;
+  color: #111827;
+}
+
+.mobile-menu-drawer {
+  position: fixed;
+  inset: 0;
+  top: 100px;
+  background-color: var(--obsidian);
+  z-index: 9999;
+  padding: 30px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  animation: luxuryFade 0.25s ease;
+}
+
+@media screen and (max-width: 860px) {
+  .main-navbar {
+    padding: 0 16px !important;
+    height: 70px !important;
+  }
+  .brand-logo-img {
+    height: 32px !important;
+  }
+  .brand-logo-text {
+    font-size: 16px !important;
+    letter-spacing: 2px !important;
+  }
+  .mobile-menu-drawer {
+    top: 70px !important;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .main-navbar {
+    padding: 0 10px !important;
+  }
+  .brand-logo-text {
+    font-size: 13px !important;
+    letter-spacing: 1.5px !important;
+  }
+}
+
 /* Utility Responsive Grids */
 .responsive-footer-grid {
   display: grid;
