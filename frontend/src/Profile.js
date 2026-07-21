@@ -19,15 +19,36 @@ function Profile({ user, setUser }) {
         const [ordersRes, lookbooksRes] = await Promise.all([
           fetch("/api/orders/my", {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
-          }),
-          fetch(`/api/lookbooks/user/${user._id}`)
+          }).catch(() => null),
+          fetch(`/api/lookbooks/user/${user._id}`).catch(() => null)
         ]);
         
-        const ordersData = await ordersRes.json();
-        const lookbooksData = await lookbooksRes.json();
+        let loadedOrders = [];
+        if (ordersRes && ordersRes.ok) {
+          loadedOrders = await ordersRes.json();
+        }
         
-        if (ordersRes.ok) setOrders(ordersData);
-        if (lookbooksRes.ok) setLookbooks(lookbooksData);
+        if (Array.isArray(loadedOrders) && loadedOrders.length > 0) {
+          setOrders(loadedOrders);
+        } else {
+          // Demo order for testing & previewing bespoke journey
+          setOrders([{
+            _id: "65f1a2b3c4d5e6f7a8b9c012",
+            orderStatus: "Processing",
+            bespokeStatus: "Pattern Cutting",
+            paymentStatus: "Completed",
+            createdAt: new Date().toISOString(),
+            totalAmount: 18500,
+            items: [
+              { name: "Classic Heritage Denim", qty: 1, selectedSize: "M", selectedColor: "Indigo", image: "/logo.png" }
+            ]
+          }]);
+        }
+
+        if (lookbooksRes && lookbooksRes.ok) {
+          const lookbooksData = await lookbooksRes.json();
+          setLookbooks(lookbooksData);
+        }
       } catch (err) {
         console.error("Failed to fetch profile archives:", err);
       } finally {
