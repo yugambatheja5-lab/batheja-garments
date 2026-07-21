@@ -59,17 +59,17 @@ function Profile({ user, setUser }) {
   return (
     <div style={{ backgroundColor: "#fafafa", minHeight: "100vh", paddingBottom: "100px" }}>
       {/* Profile Header */}
-      <div style={{ backgroundColor: "#000", color: "#fff", padding: "60px 40px", textAlign: "center" }}>
-        <h1 style={{ fontSize: "42px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "2px", marginBottom: "15px" }}>Member Profile</h1>
-        <p style={{ fontSize: "18px", color: "#ccc", maxWidth: "600px", margin: "0 auto" }}>
+      <div style={{ backgroundColor: "#000", color: "#fff", padding: "40px 16px", textAlign: "center" }}>
+        <h1 style={{ fontSize: "clamp(24px, 5vw, 42px)", fontWeight: "800", textTransform: "uppercase", letterSpacing: "2px", marginBottom: "10px" }}>Member Profile</h1>
+        <p style={{ fontSize: "clamp(13px, 2vw, 16px)", color: "#ccc", maxWidth: "600px", margin: "0 auto" }}>
           Track your luxury acquisitions and manage your shipping preferences.
         </p>
       </div>
 
-      <div style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 2.5fr", gap: "50px", alignItems: "start" }}>
+      <div className="responsive-profile-grid" style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 2.5fr", gap: "50px", alignItems: "start" }}>
         
         {/* Left Column: Identity & Logout */}
-        <div style={{ background: "#fff", padding: "40px", borderRadius: "16px", boxShadow: "0 10px 40px rgba(0,0,0,0.06)", position: "sticky", top: "120px" }}>
+        <div className="responsive-profile-sidebar" style={{ background: "#fff", padding: "30px", borderRadius: "16px", boxShadow: "0 10px 40px rgba(0,0,0,0.06)", position: "sticky", top: "120px" }}>
           <div style={{ 
             width: "90px", 
             height: "90px", 
@@ -186,19 +186,19 @@ function Profile({ user, setUser }) {
                        <OrderJourney bespokeStatus={order.bespokeStatus || 'Consultation'} />
                     </div>
 
-                    <div style={{ padding: "30px", display: "grid", gridTemplateColumns: "2fr 1fr", gap: "40px" }}>
+                    <div style={{ padding: "20px", display: "flex", flexWrap: "wrap", gap: "25px" }}>
                        {/* Product List */}
-                       <div>
-                          <p style={{ fontSize: "12px", color: "#999", fontWeight: "800", textTransform: "uppercase", marginBottom: "15px" }}>Acquired Items</p>
-                          <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+                       <div style={{ flex: "1 1 250px" }}>
+                          <p style={{ fontSize: "11px", color: "#999", fontWeight: "800", textTransform: "uppercase", marginBottom: "12px" }}>Acquired Items</p>
+                          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                              {order.items.map((item, i) => (
-                                <div key={i} style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-                                   <div style={{ width: "50px", height: "60px", background: "#f5f5f5", borderRadius: "4px", overflow: "hidden" }}>
+                                <div key={i} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                                   <div style={{ width: "45px", height: "55px", background: "#f5f5f5", borderRadius: "4px", overflow: "hidden", flexShrink: 0 }}>
                                       <img src={item.image} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                                    </div>
                                    <div>
-                                      <p style={{ fontSize: "14px", fontWeight: "700", color: "#111" }}>{item.name}</p>
-                                      <p style={{ fontSize: "12px", color: "#777", fontWeight: "500" }}>Qty: {item.qty} | Size: {item.selectedSize || item.size} | {item.selectedColor || item.color}</p>
+                                      <p style={{ fontSize: "13px", fontWeight: "700", color: "#111", margin: 0 }}>{item.name}</p>
+                                      <p style={{ fontSize: "11px", color: "#777", fontWeight: "500", margin: "2px 0 0" }}>Qty: {item.qty} | Size: {item.selectedSize || item.size} | {item.selectedColor || item.color}</p>
                                    </div>
                                 </div>
                              ))}
@@ -206,13 +206,13 @@ function Profile({ user, setUser }) {
                        </div>
 
                        {/* Summary & Actions */}
-                       <div style={{ borderLeft: "1px solid #eee", paddingLeft: "30px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                       <div style={{ flex: "1 1 200px", borderLeft: "1px solid #eee", paddingLeft: "20px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                           <div>
-                            <p style={{ fontSize: "11px", color: "#999", fontWeight: "800", textTransform: "uppercase", marginBottom: "8px" }}>Status Date</p>
-                            <p style={{ fontSize: "14px", fontWeight: "700", marginBottom: "20px" }}>{new Date(order.createdAt).toLocaleDateString()}</p>
+                            <p style={{ fontSize: "11px", color: "#999", fontWeight: "800", textTransform: "uppercase", marginBottom: "4px" }}>Status Date</p>
+                            <p style={{ fontSize: "13px", fontWeight: "700", marginBottom: "15px" }}>{new Date(order.createdAt).toLocaleDateString()}</p>
                             
-                            <p style={{ fontSize: "11px", color: "#999", fontWeight: "800", textTransform: "uppercase", marginBottom: "8px" }}>Financial Total</p>
-                            <p style={{ fontSize: "22px", fontWeight: "900", color: "#000" }}>₹{order.totalAmount.toLocaleString('en-IN')}</p>
+                            <p style={{ fontSize: "11px", color: "#999", fontWeight: "800", textTransform: "uppercase", marginBottom: "4px" }}>Financial Total</p>
+                            <p style={{ fontSize: "20px", fontWeight: "900", color: "#000", margin: 0 }}>₹{order.totalAmount.toLocaleString('en-IN')}</p>
                           </div>
                           
                           <button style={{ 

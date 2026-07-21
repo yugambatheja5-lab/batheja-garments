@@ -89,16 +89,16 @@ const ProductCard = ({ product, favorites, toggleFavorite, addToCart, clearCart,
 };
 
 const AtelierSection = ({ title, items, subtitle, addToRevealRefs, ...props }) => (
-    <div ref={addToRevealRefs} className="reveal section-dark" style={{ padding: "120px 5%", borderBottom: "1px solid rgba(255,255,255,0.03)" }}>
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", marginBottom: "80px" }}>
-        <span style={{ color: "var(--text-accent)", fontSize: "14px", fontWeight: "700", letterSpacing: "6px", textTransform: "uppercase", marginBottom: "15px" }}>{subtitle}</span>
-        <h2 style={{ fontSize: "clamp(32px, 5vw, 42px)", fontWeight: "900", textTransform: "uppercase", letterSpacing: "4px", margin: 0, color: "var(--text-main-inv)" }}>{title}</h2>
+    <div ref={addToRevealRefs} className="reveal section-dark" style={{ padding: "80px 5%", borderBottom: "1px solid rgba(255,255,255,0.03)" }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", marginBottom: "50px" }}>
+        <span style={{ color: "var(--text-accent)", fontSize: "12px", fontWeight: "700", letterSpacing: "4px", textTransform: "uppercase", marginBottom: "15px" }}>{subtitle}</span>
+        <h2 style={{ fontSize: "clamp(24px, 5vw, 42px)", fontWeight: "900", textTransform: "uppercase", letterSpacing: "3px", margin: 0, color: "var(--text-main-inv)" }}>{title}</h2>
       </div>
       
       <div style={{ 
         display: "grid", 
-        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-        gap: "50px"
+        gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+        gap: "35px"
       }}>
         {items.map((product) => (
           <ProductCard key={product._id || product.id} product={product} {...props} />
@@ -273,13 +273,13 @@ function Home({ products = [], addToCart, clearCart, favorites, toggleFavorite, 
 
       {/* NEW COLLECTION MASTERY */}
       {featuredItems.length > 0 && (
-         <div ref={addToRevealRefs} className="reveal section-dark" style={{ padding: "150px 5%" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "100px", flexWrap: "wrap", gap: "50px" }}>
+         <div ref={addToRevealRefs} className="reveal section-dark" style={{ padding: "80px 5%" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "60px", flexWrap: "wrap", gap: "30px" }}>
                <div style={{ maxWidth: "700px" }}>
-                  <span style={{ color: "var(--text-accent)", fontSize: "14px", fontWeight: "700", letterSpacing: "8px", textTransform: "uppercase" }}>High-End Specimens</span>
-                  <h2 className="serif" style={{ fontSize: "62px", fontWeight: "400", marginTop: "20px", color: "var(--text-main-inv)" }}>The Masterpieces</h2>
+                  <span style={{ color: "var(--text-accent)", fontSize: "12px", fontWeight: "700", letterSpacing: "6px", textTransform: "uppercase" }}>High-End Specimens</span>
+                  <h2 className="serif" style={{ fontSize: "clamp(28px, 6vw, 62px)", fontWeight: "400", marginTop: "15px", color: "var(--text-main-inv)" }}>The Masterpieces</h2>
                </div>
-               <button onClick={()=>navigate('/shop')} style={{ border: "none", background: "none", borderBottom: "2px solid var(--text-accent)", color: "var(--text-main-inv)", paddingBottom: "12px", cursor: "pointer", fontSize: "14px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "4px" }}>View Gallery</button>
+               <button onClick={()=>navigate('/shop')} style={{ border: "none", background: "none", borderBottom: "2px solid var(--text-accent)", color: "var(--text-main-inv)", paddingBottom: "8px", cursor: "pointer", fontSize: "12px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "3px" }}>View Gallery</button>
             </div>
 
             <div className="responsive-masterpiece-grid">
@@ -288,20 +288,20 @@ function Home({ products = [], addToCart, clearCart, favorites, toggleFavorite, 
                     key={item._id} 
                     product={item} 
                     {...commonProps} 
-                    style={{ height: "clamp(420px, 70vh, 750px)", fontSize: "clamp(22px, 3vw, 36px)" }} 
+                    style={{ height: "clamp(340px, 60vh, 750px)", fontSize: "clamp(18px, 3vw, 36px)" }} 
                   />
                ))}
             </div>
 
             <div style={{ 
-               display: "flex", gap: "50px", overflowX: "auto", paddingBottom: "60px", className: "no-scrollbar"
+               display: "flex", gap: "30px", overflowX: "auto", paddingBottom: "40px", className: "no-scrollbar"
             }}>
                {carouselItems.map(item => (
                   <ProductCard 
                     key={item._id} 
                     product={item} 
                     {...commonProps} 
-                    style={{ minWidth: "280px", width: "80vw", height: "550px", fontSize: "18px" }} 
+                    style={{ minWidth: "250px", width: "75vw", maxWidth: "350px", height: "420px", fontSize: "16px" }} 
                   />
                ))}
             </div>
@@ -313,10 +313,10 @@ function Home({ products = [], addToCart, clearCart, favorites, toggleFavorite, 
         <div ref={addToRevealRefs} className="reveal section-dark" style={{ padding: "80px 5%", background: "linear-gradient(180deg, #050505 0%, #000 100%)", position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", fontSize: "25vw", fontWeight: "900", color: "rgba(255,255,255,0.015)", pointerEvents: "none", whiteSpace: "nowrap", letterSpacing: "100px" }}>VAULT</div>
           
-          <div style={{ textAlign: "center", marginBottom: "100px", position: "relative", zIndex: 10 }}>
-            <span style={{ color: "var(--text-accent)", fontSize: "14px", fontWeight: "700", letterSpacing: "12px", textTransform: "uppercase" }}>Member Exclusives</span>
-            <h2 className="serif" style={{ fontSize: "62px", fontWeight: "400", marginTop: "25px", color: "var(--text-main-inv)" }}>Secret Acquisitions</h2>
-            <div style={{ marginTop: "40px", fontSize: "32px", fontWeight: "900", letterSpacing: "10px", color: "var(--text-accent)", animation: "luxuryFade 2s infinite" }}>
+          <div style={{ textAlign: "center", marginBottom: "60px", position: "relative", zIndex: 10 }}>
+            <span style={{ color: "var(--text-accent)", fontSize: "12px", fontWeight: "700", letterSpacing: "8px", textTransform: "uppercase" }}>Member Exclusives</span>
+            <h2 className="serif" style={{ fontSize: "clamp(28px, 6vw, 62px)", fontWeight: "400", marginTop: "15px", color: "var(--text-main-inv)" }}>Secret Acquisitions</h2>
+            <div style={{ marginTop: "25px", fontSize: "clamp(18px, 5vw, 32px)", fontWeight: "900", letterSpacing: "6px", color: "var(--text-accent)", animation: "luxuryFade 2s infinite" }}>
                {countdown}
             </div>
             <p style={{ color: "var(--text-muted-inv)", fontSize: "12px", marginTop: "20px", letterSpacing: "3px", textTransform: "uppercase" }}>Remaining until high-fidelity unlock</p>

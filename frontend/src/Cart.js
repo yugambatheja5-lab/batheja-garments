@@ -85,14 +85,14 @@ function Cart({
   );
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#fff", color: "#000", paddingBottom: "150px" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "#fff", color: "#000", paddingBottom: "100px" }}>
       {/* Editorial Header */}
-      <div style={{ padding: "60px 40px 30px", borderBottom: "1px solid #eee" }}>
-        <span style={{ fontSize: "12px", fontWeight: "700", letterSpacing: "4px", color: "var(--champagne)", textTransform: "uppercase" }}>Acquisitions Control</span>
-        <h1 style={{ fontSize: "48px", fontWeight: "900", textTransform: "uppercase", letterSpacing: "2px", margin: "10px 0 0" }}>Shopping Bag</h1>
+      <div style={{ padding: "40px 5% 20px", borderBottom: "1px solid #eee" }}>
+        <span style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "3px", color: "var(--champagne)", textTransform: "uppercase" }}>Acquisitions Control</span>
+        <h1 style={{ fontSize: "clamp(24px, 5vw, 48px)", fontWeight: "900", textTransform: "uppercase", letterSpacing: "2px", margin: "8px 0 0" }}>Shopping Bag</h1>
       </div>
 
-      <div style={{ padding: "30px 40px", maxWidth: "1600px", margin: "0 auto" }}>
+      <div style={{ padding: "20px 4%", maxWidth: "1600px", margin: "0 auto" }}>
         {cart.length === 0 && savedForLater.length === 0 ? emptyCartUI : (
           <div className="responsive-cart-layout">
 

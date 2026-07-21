@@ -221,22 +221,22 @@ function AdminDashboard({ user, fetchProducts }) {
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#0a0a0a", color: "#fff", paddingBottom: "100px" }}>
-      <div style={{ padding: "60px 40px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+      <div className="responsive-admin-header" style={{ padding: "40px 5%", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
         <div>
-           <h1 style={{ fontSize: "36px", fontWeight: "900", textTransform: "uppercase", letterSpacing: "3px", color: "#fff", margin: 0 }}>
+           <h1 style={{ fontSize: "clamp(24px, 5vw, 36px)", fontWeight: "900", textTransform: "uppercase", letterSpacing: "3px", color: "#fff", margin: 0 }}>
              Belvedere HQ
            </h1>
-           <p style={{ color: "#666", fontSize: "14px", marginTop: "10px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "1px" }}>
+           <p style={{ color: "#666", fontSize: "12px", marginTop: "8px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "1px" }}>
              Strategic Operations & Insights
            </p>
         </div>
-        <div style={{ display: "flex", gap: "10px" }}>
+        <div className="responsive-admin-tabs" style={{ display: "flex", gap: "10px" }}>
            {['analytics', 'orders', 'catalog', 'inventory'].map(tab => (
              <button 
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 style={{
-                  padding: "10px 25px",
+                  padding: "10px 20px",
                   borderRadius: "4px",
                   border: activeTab === tab ? "1px solid #d4af37" : "1px solid rgba(255,255,255,0.1)",
                   background: activeTab === tab ? "rgba(212, 175, 55, 0.1)" : "transparent",
@@ -255,10 +255,10 @@ function AdminDashboard({ user, fetchProducts }) {
         </div>
       </div>
 
-      <div style={{ maxWidth: "1300px", margin: "0 auto", padding: "40px" }}>
+      <div style={{ maxWidth: "1300px", margin: "0 auto", padding: "20px 4%" }}>
         
         {/* COMMAND CENTER STATS */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px", marginBottom: "40px" }}>
+        <div className="responsive-admin-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px", marginBottom: "40px" }}>
            {[
              { label: "Total Revenue", value: `₹${stats.revenue.toLocaleString()}`, color: "#d4af37" },
              { label: "Order Volume", value: stats.orders, color: "#fff" },
@@ -318,7 +318,7 @@ function AdminDashboard({ user, fetchProducts }) {
 
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                  {productsList.map(item => (
-                   <div key={item._id} style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "8px", padding: "15px 25px", display: "grid", gridTemplateColumns: "80px 1.5fr 1fr 1fr 220px", gap: "20px", alignItems: "center" }}>
+                   <div key={item._id} className="responsive-admin-catalog-item" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "8px", padding: "15px 25px", display: "grid", gridTemplateColumns: "80px 1.5fr 1fr 1fr 220px", gap: "20px", alignItems: "center" }}>
                       <img src={item.image} alt="" style={{ width: "60px", height: "60px", objectFit: "cover", borderRadius: "4px", border: "1px solid rgba(255,255,255,0.1)" }} />
                       <div>
                          <p style={{ fontSize: "14px", fontWeight: "700", marginBottom: "2px" }}>{item.name}</p>

@@ -75,9 +75,10 @@ function AtelierAI({ user }) {
       {isOpen && (
         <div style={{
           position: "fixed",
-          bottom: "100px",
-          right: "30px",
-          width: "350px",
+          bottom: "90px",
+          right: "16px",
+          width: "calc(100vw - 32px)",
+          maxWidth: "350px",
           background: "#111",
           border: "1px solid rgba(212, 175, 55, 0.3)",
           borderRadius: "12px",

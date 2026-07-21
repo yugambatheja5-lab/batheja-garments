@@ -37,10 +37,17 @@ function ProductDetail({ allProducts = [], addToCart, clearCart, favorites, togg
         setLoading(false);
       })
       .catch(err => {
-        console.error(err);
+        console.error("API fetch failed, checking static products:", err);
+        const found = allProducts.find(p => String(p._id || p.id) === String(id));
+        if (found) {
+          setProduct(found);
+          setMainImage(found.image);
+          if (found.variants?.sizes?.length > 0) setSelectedSize(found.variants.sizes[0]);
+          if (found.variants?.colors?.length > 0) setSelectedColor(found.variants.colors[0]);
+        }
         setLoading(false);
       });
-  }, [id]);
+  }, [id, allProducts]);
 
   if (loading) {
     return (
@@ -140,28 +147,28 @@ function ProductDetail({ allProducts = [], addToCart, clearCart, favorites, togg
             <span style={{ textTransform: "uppercase", letterSpacing: "4px", fontSize: "12px", color: "var(--champagne)", fontWeight: "700", display: "block", marginBottom: "15px" }}>
                {product.department} &nbsp; // &nbsp; {product.category}
             </span>
-            <h1 className="serif" style={{ fontSize: "56px", fontWeight: "400", marginBottom: "25px", color: "#fff", lineHeight: 1.1 }}>
+            <h1 className="serif" style={{ fontSize: "clamp(28px, 6vw, 56px)", fontWeight: "400", marginBottom: "20px", color: "#fff", lineHeight: 1.15 }}>
               {product.name}
             </h1>
-            <div style={{ display: "flex", alignItems: "center", gap: "25px" }}>
-               <h2 style={{ fontSize: "32px", fontWeight: "300", color: "var(--champagne)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "20px", flexWrap: "wrap" }}>
+               <h2 style={{ fontSize: "clamp(22px, 5vw, 32px)", fontWeight: "300", color: "var(--champagne)" }}>
                  ₹{product.price.toLocaleString('en-IN')}
                </h2>
                {product.stock < 10 && product.stock > 0 && (
-                 <span style={{ fontSize: "11px", backgroundColor: "rgba(193, 161, 115, 0.1)", color: "var(--champagne)", padding: "10px 20px", border: "1px solid var(--champagne)", fontWeight: "900", letterSpacing: "2px", textTransform: "uppercase" }}>
+                 <span style={{ fontSize: "10px", backgroundColor: "rgba(193, 161, 115, 0.1)", color: "var(--champagne)", padding: "8px 16px", border: "1px solid var(--champagne)", fontWeight: "900", letterSpacing: "1.5px", textTransform: "uppercase" }}>
                     LIMITED ATELIER STOCK
                  </span>
                )}
             </div>
           </div>
 
-          <p style={{ fontSize: "18px", lineHeight: "1.8", color: "#aaa", marginBottom: "50px", fontWeight: "300" }}>
+          <p style={{ fontSize: "clamp(14px, 2vw, 18px)", lineHeight: "1.8", color: "#aaa", marginBottom: "40px", fontWeight: "300" }}>
             {product.description}
           </p>
 
           {/* COLOR SELECTOR */}
-          <div style={{ marginBottom: "40px" }}>
-            <p style={{ fontWeight: "800", marginBottom: "20px", fontSize: "12px", textTransform: "uppercase", letterSpacing: "2px", color: "var(--champagne)" }}>
+          <div style={{ marginBottom: "30px" }}>
+            <p style={{ fontWeight: "800", marginBottom: "15px", fontSize: "12px", textTransform: "uppercase", letterSpacing: "2px", color: "var(--champagne)" }}>
               Shade Selection: <span style={{ fontWeight: "400", color: "#fff", paddingLeft: "10px" }}>{selectedColor}</span>
             </p>
             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
@@ -170,14 +177,14 @@ function ProductDetail({ allProducts = [], addToCart, clearCart, favorites, togg
                   key={color}
                   onClick={() => setSelectedColor(color)}
                   style={{
-                    padding: "12px 30px",
+                    padding: "10px 24px",
                     border: selectedColor === color ? "1px solid var(--champagne)" : "1px solid rgba(255,255,255,0.1)",
                     background: selectedColor === color ? "var(--champagne)" : "transparent",
                     color: selectedColor === color ? "#000" : "#fff",
                     fontWeight: "800",
-                    fontSize: "12px",
+                    fontSize: "11px",
                     textTransform: "uppercase",
-                    letterSpacing: "2px",
+                    letterSpacing: "1.5px",
                     cursor: "pointer",
                     transition: "all 0.3s ease"
                   }}
@@ -189,18 +196,18 @@ function ProductDetail({ allProducts = [], addToCart, clearCart, favorites, togg
           </div>
 
           {/* SIZE SELECTOR */}
-          <div style={{ marginBottom: "60px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+          <div style={{ marginBottom: "40px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "15px" }}>
               <p style={{ fontWeight: "800", fontSize: "12px", textTransform: "uppercase", letterSpacing: "2px", color: "var(--champagne)" }}>Size Configuration</p>
             </div>
-            <div style={{ display: "flex", gap: "10px" }}>
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
               {availableSizes.map(size => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
                   style={{
-                    width: "60px",
-                    height: "60px",
+                    width: "50px",
+                    height: "50px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -209,7 +216,7 @@ function ProductDetail({ allProducts = [], addToCart, clearCart, favorites, togg
                     color: selectedSize === size ? "#000" : "#fff",
                     fontWeight: "800",
                     cursor: "pointer",
-                    fontSize: "14px",
+                    fontSize: "13px",
                     transition: "all 0.3s ease"
                   }}
                 >
@@ -220,7 +227,7 @@ function ProductDetail({ allProducts = [], addToCart, clearCart, favorites, togg
           </div>
 
           {/* ACTION BUTTONS */}
-          <div style={{ display: "flex", gap: "12px", width: "100%", marginTop: "15px" }}>
+          <div style={{ display: "flex", gap: "10px", width: "100%", marginTop: "15px", flexWrap: "wrap" }}>
             <button
                disabled={outOfStock}
                onClick={(e) => {

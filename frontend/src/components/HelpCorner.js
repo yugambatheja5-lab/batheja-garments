@@ -5,20 +5,22 @@ const HelpCorner = () => {
     const [isHovered, setIsHovered] = useState(false);
     const navigate = useNavigate();
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+
     const buttonStyle = {
         position: 'fixed',
-        bottom: '40px',
-        left: '40px', // Moved to Bottom Left to avoid collision with Stylist
+        bottom: isMobile ? '20px' : '40px',
+        left: isMobile ? '16px' : '40px', // Moved to Bottom Left to avoid collision with Stylist
         zIndex: 1002,
-        height: '48px',
-        width: isHovered ? '200px' : '110px', // Persistent pill shape for quick discovery
+        height: '44px',
+        width: isHovered ? '190px' : '100px', // Persistent pill shape for quick discovery
         background: 'rgba(5, 5, 5, 0.95)',
         backdropFilter: 'blur(10px)',
         border: '1px solid var(--champagne)',
         borderRadius: '24px',
         display: 'flex',
         alignItems: 'center',
-        padding: '0 20px',
+        padding: '0 16px',
         justifyContent: 'flex-start',
         cursor: 'pointer',
         boxShadow: isHovered ? '0 15px 40px rgba(0,0,0,0.4), 0 0 15px rgba(193,161,115,0.2)' : '0 10px 30px rgba(0,0,0,0.3)',

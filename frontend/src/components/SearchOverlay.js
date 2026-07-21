@@ -112,7 +112,7 @@ const SearchOverlay = ({ isOpen, onClose, products }) => {
   if (!isOpen) return null;
 
   return (
-    <div style={{
+    <div className="responsive-search-container" style={{
       position: "fixed",
       inset: 0,
       backgroundColor: "rgba(255, 255, 255, 0.98)",
@@ -120,12 +120,12 @@ const SearchOverlay = ({ isOpen, onClose, products }) => {
       zIndex: 2000,
       display: "flex",
       flexDirection: "column",
-      padding: "100px 10%",
+      padding: "60px 5%",
       animation: "luxuryFade 0.4s easeOut"
     }}>
       <button 
         onClick={onClose}
-        style={{ position: "absolute", top: "40px", right: "40px", background: "none", border: "none", fontSize: "32px", cursor: "pointer", color: "#000" }}
+        style={{ position: "absolute", top: "20px", right: "20px", background: "none", border: "none", fontSize: "28px", cursor: "pointer", color: "#000", zIndex: 10 }}
       >
         ✕
       </button>
@@ -137,29 +137,30 @@ const SearchOverlay = ({ isOpen, onClose, products }) => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search specimens, categories, or collections..."
+          className="responsive-search-input"
           style={{
             width: "100%",
             background: "none",
             border: "none",
             borderBottom: "2px solid #000",
-            fontSize: "42px",
+            fontSize: "clamp(22px, 5vw, 42px)",
             fontWeight: "900",
-            padding: "20px 0",
+            padding: "15px 0",
             outline: "none",
             letterSpacing: "2px",
             textTransform: "uppercase",
             color: "#000"
           }}
         />
-        <p style={{ marginTop: "15px", fontSize: "12px", letterSpacing: "3px", fontWeight: "700", opacity: 0.5, textTransform: "uppercase" }}>
+        <p style={{ marginTop: "10px", fontSize: "11px", letterSpacing: "2px", fontWeight: "700", opacity: 0.5, textTransform: "uppercase" }}>
           Instant High-Fidelity Search
         </p>
       </form>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: "100px", marginTop: "60px", flex: 1, overflow: "hidden" }}>
+      <div className="responsive-search-grid" style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "40px", marginTop: "30px", flex: 1, overflow: "hidden" }}>
         
         {/* Results Block */}
-        <div style={{ overflowY: "auto", paddingRight: "20px" }} className="no-scrollbar">
+        <div style={{ overflowY: "auto", paddingRight: "10px" }} className="no-scrollbar">
           {query && results.length > 0 ? (
             <div style={{ display: "grid", gap: "40px" }}>
                {results.map(p => (

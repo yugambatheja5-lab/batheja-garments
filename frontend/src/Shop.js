@@ -46,9 +46,16 @@ function Shop({ products = [], isLoading, addToCart, clearCart, favorites, toggl
   }, [products, selectedDepartment, selectedCategory, maxPrice, search]);
 
   const [isFilterMobileOpen, setIsFilterMobileOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(typeof window !== 'undefined' && window.innerWidth > 860);
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth > 860);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const Sidebar = () => (
-    <div className="responsive-shop-sidebar" style={{ width: "320px", position: "sticky", top: "150px", height: "fit-content", paddingRight: "50px", borderRight: "1px solid #eee" }}>
+    <div className="responsive-shop-sidebar" style={{ width: "100%", maxWidth: "320px", position: "sticky", top: "150px", height: "fit-content", paddingRight: "30px", borderRight: "1px solid #eee" }}>
       <div style={{ marginBottom: "40px" }}>
         <p style={{ fontSize: "11px", fontWeight: "900", letterSpacing: "4px", color: "var(--text-main)", textTransform: "uppercase", marginBottom: "20px" }}>Showroom Categories</p>
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -182,7 +189,7 @@ function Shop({ products = [], isLoading, addToCart, clearCart, favorites, toggl
 
       <div className="responsive-shop-layout">
         {/* Render Sidebar desktop or if mobile toggle is active */}
-        {(window.innerWidth > 860 || isFilterMobileOpen) && <Sidebar />}
+        {(isDesktop || isFilterMobileOpen) && <Sidebar />}
 
         <div style={{ flex: 1 }}>
           {isLoading ? (

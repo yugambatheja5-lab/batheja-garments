@@ -322,14 +322,14 @@ function Checkout({ cart, clearCart, user, appliedCoupon }) {
         </div>
       )}
 
-      <div style={{ backgroundColor: "#000", color: "#fff", padding: "40px", textAlign: "center" }}>
-        <h1 style={{ fontSize: "36px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "2px" }}>Secure Checkout</h1>
+      <div style={{ backgroundColor: "#000", color: "#fff", padding: "30px 16px", textAlign: "center" }}>
+        <h1 style={{ fontSize: "clamp(22px, 5vw, 36px)", fontWeight: "800", textTransform: "uppercase", letterSpacing: "2px", margin: 0 }}>Secure Checkout</h1>
       </div>
 
-      <div style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto", display: "flex", gap: "60px", flexWrap: "wrap", alignItems: "flex-start" }}>
+      <div style={{ padding: "20px 16px", maxWidth: "1200px", margin: "0 auto", display: "flex", gap: "30px", flexWrap: "wrap", alignItems: "flex-start" }}>
         
         {/* SECURE CHECKOUT FORM */}
-        <div style={{ flex: "1 1 600px", background: "#fff", padding: "40px", borderRadius: "16px", boxShadow: "0 10px 40px rgba(0,0,0,0.06)" }}>
+        <div style={{ flex: "1 1 500px", background: "#fff", padding: "24px", borderRadius: "16px", boxShadow: "0 10px 40px rgba(0,0,0,0.06)", width: "100%" }}>
           {validationError && (
             <div style={{ backgroundColor: "#ffebeb", color: "#d32f2f", padding: "15px", borderRadius: "8px", marginBottom: "30px", fontWeight: "600", border: "1px solid #ffcdd2" }}>
               ⚠️ {validationError}
@@ -337,26 +337,26 @@ function Checkout({ cart, clearCart, user, appliedCoupon }) {
           )}
 
           <form id="checkout-form" onSubmit={handleCheckout}>
-            <h2 style={{ fontSize: "24px", fontWeight: "800", marginBottom: "25px", borderBottom: "1px solid #eee", paddingBottom: "15px", color: "#111" }}>1. Delivery Logistics</h2>
+            <h2 style={{ fontSize: "20px", fontWeight: "800", marginBottom: "20px", borderBottom: "1px solid #eee", paddingBottom: "12px", color: "#111" }}>1. Delivery Logistics</h2>
             <div style={{ marginBottom: "15px" }}>
-              <label style={{ display: "block", fontSize: "12px", fontWeight: "700", textTransform: "uppercase", marginBottom: "8px", color: "#666" }}>Street Address</label>
-              <input required value={address.street} onChange={e => setAddress({...address, street: e.target.value})} style={{ width: "100%", padding: "15px", borderRadius: "8px", border: "1px solid #ddd", fontSize: "16px", boxSizing: "border-box", outline: "none" }} />
+              <label style={{ display: "block", fontSize: "11px", fontWeight: "700", textTransform: "uppercase", marginBottom: "8px", color: "#666" }}>Street Address</label>
+              <input required value={address.street} onChange={e => setAddress({...address, street: e.target.value})} style={{ width: "100%", padding: "14px", borderRadius: "8px", border: "1px solid #ddd", fontSize: "15px", boxSizing: "border-box", outline: "none" }} />
             </div>
-            <div style={{ display: "flex", gap: "20px", marginBottom: "40px" }}>
-              <div style={{ flex: 1 }}>
-                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", textTransform: "uppercase", marginBottom: "8px", color: "#666" }}>City</label>
-                <input required value={address.city} onChange={e => setAddress({...address, city: e.target.value})} style={{ width: "100%", padding: "15px", borderRadius: "8px", border: "1px solid #ddd", fontSize: "16px", boxSizing: "border-box", outline: "none" }} />
+            <div style={{ display: "flex", gap: "15px", marginBottom: "30px", flexWrap: "wrap" }}>
+              <div style={{ flex: "1 1 140px" }}>
+                <label style={{ display: "block", fontSize: "11px", fontWeight: "700", textTransform: "uppercase", marginBottom: "8px", color: "#666" }}>City</label>
+                <input required value={address.city} onChange={e => setAddress({...address, city: e.target.value})} style={{ width: "100%", padding: "14px", borderRadius: "8px", border: "1px solid #ddd", fontSize: "15px", boxSizing: "border-box", outline: "none" }} />
               </div>
-              <div style={{ flex: 1 }}>
-                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", textTransform: "uppercase", marginBottom: "8px", color: "#666" }}>Zip / Postal</label>
-                <input required value={address.zip} onChange={e => setAddress({...address, zip: e.target.value})} style={{ width: "100%", padding: "15px", borderRadius: "8px", border: "1px solid #ddd", fontSize: "16px", boxSizing: "border-box", outline: "none" }} />
+              <div style={{ flex: "1 1 140px" }}>
+                <label style={{ display: "block", fontSize: "11px", fontWeight: "700", textTransform: "uppercase", marginBottom: "8px", color: "#666" }}>Zip / Postal</label>
+                <input required value={address.zip} onChange={e => setAddress({...address, zip: e.target.value})} style={{ width: "100%", padding: "14px", borderRadius: "8px", border: "1px solid #ddd", fontSize: "15px", boxSizing: "border-box", outline: "none" }} />
               </div>
             </div>
 
-            <h2 style={{ fontSize: "24px", fontWeight: "800", marginBottom: "25px", borderBottom: "1px solid #eee", paddingBottom: "15px", color: "#111" }}>2. Payment Provider</h2>
+            <h2 style={{ fontSize: "20px", fontWeight: "800", marginBottom: "20px", borderBottom: "1px solid #eee", paddingBottom: "12px", color: "#111" }}>2. Payment Provider</h2>
             
             {/* Payment Tabs */}
-            <div style={{ display: "flex", gap: "10px", marginBottom: "25px" }}>
+            <div className="checkout-payment-tabs" style={{ display: "flex", gap: "10px", marginBottom: "25px" }}>
               {["card", "upi", "cod"].map(method => (
                 <button
                   key={method}

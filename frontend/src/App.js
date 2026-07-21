@@ -275,7 +275,7 @@ const AppLayout = ({
           )}
         </div>
 
-        <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "8px" }}>
+        <div className="nav-right-actions" style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "8px" }}>
 
           <button 
             onClick={() => setIsSearchOpen(true)}
@@ -305,6 +305,10 @@ const AppLayout = ({
       {/* MOBILE SLIDE-OUT DRAWER */}
       {isMobileMenuOpen && (
         <div className="mobile-menu-drawer">
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+            <span style={{ fontSize: "11px", fontWeight: "900", color: "var(--champagne)", letterSpacing: "2px", textTransform: "uppercase" }}>Atelier Menu</span>
+            <button onClick={() => setIsMobileMenuOpen(false)} style={{ background: "none", border: "none", color: "#fff", fontSize: "22px", cursor: "pointer", padding: "5px" }}>✕</button>
+          </div>
           <Link to="/shop" state={{ department: 'Men' }} onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "16px", fontWeight: "800", letterSpacing: "2px", textTransform: "uppercase" }}>MEN'S COLLECTION</Link>
           <Link to="/shop" state={{ department: 'Women' }} onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "16px", fontWeight: "800", letterSpacing: "2px", textTransform: "uppercase" }}>WOMEN'S COLLECTION</Link>
           <Link to="/shop" state={{ department: 'Kids' }} onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "16px", fontWeight: "800", letterSpacing: "2px", textTransform: "uppercase" }}>KIDS COLLECTION</Link>
