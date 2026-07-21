@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: batheja-garments-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: MONGO_URI
+        value: mongodb+srv://Yugam:Yugam006@cluster0.5dogq5t.mongodb.net/clothing-store?retryWrites=true&w=majority
+      - key: JWT_SECRET
+        value: batheja_super_secret_key_2026
+      - key: PORT
+        value: 5000

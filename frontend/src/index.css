@@ -1,0 +1,410 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --obsidian: #131921;
+  --champagne: #d4a656;
+  --ivory: #f7f4ee;
+  --glass: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.12);
+
+  /* Typography Design Tokens (Resolving Font Color Consistency) */
+  --text-main: #1f2937;
+  --text-main-inv: #f9fafb;
+  --text-muted: #5f6b7a;
+  --text-muted-inv: #c0cad8;
+  --text-accent: var(--champagne);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-float-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background-color: var(--ivory);
+  color: var(--text-main);
+  font-family: 'Source Sans 3', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Ensure headings use the serif font and obey tokens */
+h1, h2, h3, h4, .serif {
+  font-family: 'Libre Baskerville', serif;
+  color: inherit;
+}
+
+/* Batheja Luxury Keyframes */
+@keyframes luxuryReveal {
+  0% { opacity: 0; transform: translateY(40px) scale(0.98); filter: blur(10px); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+@keyframes luxuryFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.nav-active {
+  color: var(--champagne) !important;
+  position: relative;
+  background-color: rgba(212, 166, 86, 0.15);
+  border-color: var(--champagne) !important;
+}
+
+.nav-pill {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 30px;
+  background-color: transparent;
+  transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1) !important;
+}
+
+.nav-pill:hover {
+  border-color: var(--champagne);
+  background-color: rgba(212, 166, 86, 0.2);
+  color: var(--champagne) !important;
+  transform: translateY(-2px);
+}
+
+.nav-active::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background-color: var(--champagne);
+  animation: luxuryFade 0.3s ease;
+  will-change: opacity, transform;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background-color: #232f3e;
+  color: #fff8ea;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1001;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Specific Page Segment Targets */
+.section-dark {
+  background-color: var(--obsidian);
+  color: var(--text-main-inv);
+}
+
+.section-dark span, .section-dark p {
+  color: var(--text-muted-inv);
+}
+
+.section-dark h1, .section-dark h2, .section-dark h3 {
+  color: var(--text-main-inv);
+}
+
+.reveal.active {
+  animation: luxuryReveal 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+
+/* ==========================================================================
+   SMOOTH POP-UP & FLOATING ELEVATION EFFECT ON CURSOR HOVER
+   ========================================================================== */
+.shop-product-card,
+.product-card-container,
+.responsive-product-card-img {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.4s ease,
+              background-color 0.4s ease !important;
+  will-change: transform, box-shadow;
+  position: relative;
+  overflow: hidden;
+}
+
+.shop-product-card:hover,
+.product-card-container:hover {
+  transform: translateY(-12px) scale(1.02) !important;
+  box-shadow: 0 22px 45px rgba(0, 0, 0, 0.14) !important;
+  border-color: var(--champagne) !important;
+  z-index: 10;
+}
+
+.shop-product-card img,
+.product-card-container img,
+.responsive-product-card-img img,
+.luxury-img {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease !important;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+.shop-product-card:hover img,
+.product-card-container:hover img,
+.responsive-product-card-img:hover img,
+.luxury-img:hover {
+  transform: scale(1.06) !important;
+  filter: brightness(1.03);
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Custom Scrollbar for Luxury Feel */
+::-webkit-scrollbar {
+  width: 6px;
+  display: block; 
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #eee;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--champagne);
+}
+
+code {
+  font-family: 'Courier New', monospace;
+}
+
+/* ==========================================================================
+   ATELIER RESPONSIVE DESIGN SYSTEM (Mobile, Tablet, Desktop)
+   ========================================================================== */
+
+/* Mobile Hamburger & Drawer Base */
+.mobile-menu-btn {
+  display: none !important;
+}
+
+.desktop-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.mobile-filter-btn {
+  display: none !important;
+}
+
+/* Utility Responsive Grids */
+.responsive-footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 80px;
+}
+
+.responsive-masterpiece-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 100px;
+  margin-bottom: 120px;
+}
+
+.responsive-shop-layout {
+  padding: 60px 5%;
+  display: flex;
+  gap: 80px;
+}
+
+.responsive-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 60px 40px;
+}
+
+.responsive-detail-layout {
+  display: flex;
+  gap: 100px;
+  max-width: 1600px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.responsive-gallery-box {
+  flex: 1 1 700px;
+  display: flex;
+  gap: 25px;
+}
+
+.responsive-detail-main-img {
+  flex-grow: 1;
+  overflow: hidden;
+  background-color: #0a0a0a;
+  position: relative;
+  min-height: 750px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.responsive-detail-info {
+  flex: 1 1 450px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tablet Breakpoint (<= 1024px) */
+@media screen and (max-width: 1024px) {
+  .responsive-footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .responsive-masterpiece-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+  }
+
+  .responsive-shop-layout {
+    gap: 40px;
+    padding: 40px 3%;
+  }
+
+  .responsive-product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 40px 25px;
+  }
+
+  .responsive-detail-layout {
+    gap: 40px;
+  }
+
+  .responsive-gallery-box {
+    flex: 1 1 100%;
+  }
+
+  .responsive-detail-main-img {
+    min-height: 500px;
+  }
+}
+
+/* Mobile Breakpoint (<= 860px) */
+@media screen and (max-width: 860px) {
+  .desktop-nav-links {
+    display: none !important;
+  }
+
+  .mobile-menu-btn {
+    display: flex !important;
+  }
+
+  .mobile-filter-btn {
+    display: flex !important;
+  }
+
+  .responsive-footer-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .responsive-shop-layout {
+    flex-direction: column;
+    padding: 20px 4%;
+  }
+
+  .responsive-shop-sidebar {
+    width: 100% !important;
+    position: static !important;
+    border-right: none !important;
+    border-bottom: 1px solid #eee;
+    padding-right: 0 !important;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+  }
+
+  .responsive-product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+    gap: 30px 15px !important;
+  }
+
+  .responsive-product-card-img {
+    height: 320px !important;
+  }
+
+  .responsive-gallery-box {
+    flex-direction: column-reverse;
+    gap: 15px;
+  }
+
+  .responsive-gallery-thumbs {
+    flex-direction: row !important;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+
+  .responsive-detail-main-img {
+    min-height: 380px;
+  }
+
+  .responsive-detail-info {
+    flex: 1 1 100%;
+  }
+}
+
+.responsive-cart-layout {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 50px;
+  align-items: flex-start;
+}
+
+.responsive-cart-item {
+  display: grid;
+  grid-template-columns: 150px 1fr auto;
+  gap: 30px;
+  padding: 30px 0;
+  border-bottom: 1px solid #eee;
+}
+
+@media screen and (max-width: 960px) {
+  .responsive-cart-layout {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+
+  .responsive-cart-item {
+    grid-template-columns: 100px 1fr !important;
+    gap: 15px !important;
+  }
+}
