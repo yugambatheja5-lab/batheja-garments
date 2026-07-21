@@ -13,12 +13,12 @@ function OrderJourney({ bespokeStatus }) {
   const currentStepIndex = steps.findIndex(s => s.id === bespokeStatus);
 
   return (
-    <div style={{ width: "100%", padding: "40px", background: "rgba(255,255,255,0.02)", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)", marginTop: "30px" }}>
-      <h3 style={{ fontSize: "12px", fontWeight: "900", textTransform: "uppercase", letterSpacing: "2px", color: "#d4af37", marginBottom: "40px", textAlign: "center" }}>
+    <div style={{ width: "100%", padding: "20px 10px", background: "rgba(255,255,255,0.02)", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.05)", marginTop: "20px", overflowX: "auto", boxSizing: "border-box" }} className="no-scrollbar">
+      <h3 style={{ fontSize: "12px", fontWeight: "900", textTransform: "uppercase", letterSpacing: "2px", color: "#d4af37", marginBottom: "30px", textAlign: "center" }}>
         Your Bespoke Journey
       </h3>
       
-      <div style={{ display: "flex", justifyContent: "space-between", position: "relative", maxWidth: "800px", margin: "0 auto" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", position: "relative", minWidth: "540px", margin: "0 auto", padding: "0 10px" }}>
         {/* Progress Line */}
         <div style={{ position: "absolute", top: "25px", left: "5%", right: "5%", height: "2px", background: "rgba(255,255,255,0.1)", zIndex: 1 }} />
         <div style={{ position: "absolute", top: "25px", left: "5%", width: `${(currentStepIndex / (steps.length - 1)) * 90}%`, height: "2px", background: "#d4af37", zIndex: 2, transition: "width 0.8s cubic-bezier(0.4, 0, 0.2, 1)" }} />

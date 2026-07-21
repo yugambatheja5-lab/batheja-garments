@@ -126,10 +126,10 @@ function Profile({ user, setUser }) {
         <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
           
           {/* Order History Section */}
-          <div style={{ background: "#fff", padding: "50px", borderRadius: "16px", boxShadow: "0 10px 40px rgba(0,0,0,0.06)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "40px", borderBottom: "1px solid #eee", paddingBottom: "20px" }}>
-              <h3 style={{ fontSize: "28px", fontWeight: "900", margin: 0, letterSpacing: "-1px" }}>Order Acquisitions</h3>
-              <span style={{ background: "#000", color: "#fff", fontSize: "12px", padding: "5px 15px", borderRadius: "20px", fontWeight: "700" }}>
+          <div className="responsive-profile-card" style={{ background: "#fff", padding: "30px", borderRadius: "16px", boxShadow: "0 10px 40px rgba(0,0,0,0.06)", overflow: "hidden" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px", borderBottom: "1px solid #eee", paddingBottom: "15px", flexWrap: "wrap", gap: "10px" }}>
+              <h3 style={{ fontSize: "clamp(20px, 4vw, 28px)", fontWeight: "900", margin: 0, letterSpacing: "-0.5px" }}>Order Acquisitions</h3>
+              <span style={{ background: "#000", color: "#fff", fontSize: "11px", padding: "4px 12px", borderRadius: "20px", fontWeight: "700" }}>
                 {orders.length} TOTAL
               </span>
             </div>
@@ -139,32 +139,32 @@ function Profile({ user, setUser }) {
                   <p style={{ color: "#777", fontWeight: "600" }}>Securing your history...</p>
                </div>
             ) : orders.length === 0 ? (
-              <div style={{ textAlign: "center", padding: "60px 20px", border: "2px dashed #eee", borderRadius: "12px" }}>
-                <p style={{ fontSize: "18px", color: "#888", marginBottom: "25px", fontWeight: "600" }}>Your acquisition history is currently empty.</p>
+              <div style={{ textAlign: "center", padding: "40px 16px", border: "2px dashed #eee", borderRadius: "12px" }}>
+                <p style={{ fontSize: "16px", color: "#888", marginBottom: "20px", fontWeight: "600" }}>Your acquisition history is currently empty.</p>
                 <button 
                   onClick={() => navigate("/shop")}
-                  style={{ padding: "16px 40px", backgroundColor: "#000", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "800", textTransform: "uppercase", letterSpacing: "2px" }}
+                  style={{ padding: "14px 30px", backgroundColor: "#000", color: "#fff", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "800", textTransform: "uppercase", letterSpacing: "2px" }}
                 >
                   Explore Collection
                 </button>
               </div>
             ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: "25px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
                 {orders.map((order) => (
                   <div key={order._id} className="shop-product-card" style={{ border: "1px solid #f0f0f0", borderRadius: "12px", overflow: "hidden" }}>
                     {/* Order Header / Meta */}
-                    <div style={{ background: "#fafafa", padding: "20px 30px", borderBottom: "1px solid #f0f0f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div style={{ background: "#fafafa", padding: "16px", borderBottom: "1px solid #f0f0f0", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
                         <div>
-                          <p style={{ fontSize: "11px", color: "#999", fontWeight: "800", textTransform: "uppercase", marginBottom: "5px", letterSpacing: "1px" }}>Order ID</p>
-                          <p style={{ fontSize: "15px", fontWeight: "700", color: "#333", fontFamily: "monospace" }}>#{order._id.substring(18).toUpperCase()}</p>
+                          <p style={{ fontSize: "10px", color: "#999", fontWeight: "800", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>Order ID</p>
+                          <p style={{ fontSize: "14px", fontWeight: "700", color: "#333", fontFamily: "monospace", margin: 0 }}>#{order._id.substring(18).toUpperCase()}</p>
                         </div>
-                        <div style={{ textAlign: "right", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "5px" }}>
+                        <div style={{ textAlign: "right", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "4px" }}>
                            <span style={{ 
-                             fontSize: "11px", 
+                             fontSize: "10px", 
                              fontWeight: "800", 
                              textTransform: "uppercase", 
-                             letterSpacing: "1.5px", 
-                             padding: "6px 14px", 
+                             letterSpacing: "1px", 
+                             padding: "5px 10px", 
                              borderRadius: "4px", 
                              backgroundColor: getStatusColor(order.orderStatus), 
                              color: "#fff" 
@@ -182,23 +182,23 @@ function Profile({ user, setUser }) {
                         </div>
                     </div>
 
-                    <div style={{ padding: "0 30px" }}>
+                    <div style={{ padding: "0 10px" }}>
                        <OrderJourney bespokeStatus={order.bespokeStatus || 'Consultation'} />
                     </div>
 
-                    <div style={{ padding: "20px", display: "flex", flexWrap: "wrap", gap: "25px" }}>
+                    <div style={{ padding: "16px", display: "flex", flexWrap: "wrap", gap: "20px" }}>
                        {/* Product List */}
-                       <div style={{ flex: "1 1 250px" }}>
-                          <p style={{ fontSize: "11px", color: "#999", fontWeight: "800", textTransform: "uppercase", marginBottom: "12px" }}>Acquired Items</p>
-                          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                       <div style={{ flex: "1 1 220px" }}>
+                          <p style={{ fontSize: "11px", color: "#999", fontWeight: "800", textTransform: "uppercase", marginBottom: "10px" }}>Acquired Items</p>
+                          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                              {order.items.map((item, i) => (
-                                <div key={i} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                                   <div style={{ width: "45px", height: "55px", background: "#f5f5f5", borderRadius: "4px", overflow: "hidden", flexShrink: 0 }}>
+                                <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                   <div style={{ width: "40px", height: "50px", background: "#f5f5f5", borderRadius: "4px", overflow: "hidden", flexShrink: 0 }}>
                                       <img src={item.image} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                                    </div>
                                    <div>
-                                      <p style={{ fontSize: "13px", fontWeight: "700", color: "#111", margin: 0 }}>{item.name}</p>
-                                      <p style={{ fontSize: "11px", color: "#777", fontWeight: "500", margin: "2px 0 0" }}>Qty: {item.qty} | Size: {item.selectedSize || item.size} | {item.selectedColor || item.color}</p>
+                                      <p style={{ fontSize: "12px", fontWeight: "700", color: "#111", margin: 0 }}>{item.name}</p>
+                                      <p style={{ fontSize: "10px", color: "#777", fontWeight: "500", margin: "2px 0 0" }}>Qty: {item.qty} | Size: {item.selectedSize || item.size}</p>
                                    </div>
                                 </div>
                              ))}
@@ -206,22 +206,22 @@ function Profile({ user, setUser }) {
                        </div>
 
                        {/* Summary & Actions */}
-                       <div style={{ flex: "1 1 200px", borderLeft: "1px solid #eee", paddingLeft: "20px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                       <div style={{ flex: "1 1 180px", borderLeft: "1px solid #eee", paddingLeft: "16px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                           <div>
-                            <p style={{ fontSize: "11px", color: "#999", fontWeight: "800", textTransform: "uppercase", marginBottom: "4px" }}>Status Date</p>
-                            <p style={{ fontSize: "13px", fontWeight: "700", marginBottom: "15px" }}>{new Date(order.createdAt).toLocaleDateString()}</p>
+                            <p style={{ fontSize: "10px", color: "#999", fontWeight: "800", textTransform: "uppercase", marginBottom: "2px" }}>Status Date</p>
+                            <p style={{ fontSize: "12px", fontWeight: "700", marginBottom: "10px" }}>{new Date(order.createdAt).toLocaleDateString()}</p>
                             
-                            <p style={{ fontSize: "11px", color: "#999", fontWeight: "800", textTransform: "uppercase", marginBottom: "4px" }}>Financial Total</p>
-                            <p style={{ fontSize: "20px", fontWeight: "900", color: "#000", margin: 0 }}>₹{order.totalAmount.toLocaleString('en-IN')}</p>
+                            <p style={{ fontSize: "10px", color: "#999", fontWeight: "800", textTransform: "uppercase", marginBottom: "2px" }}>Financial Total</p>
+                            <p style={{ fontSize: "18px", fontWeight: "900", color: "#000", margin: 0 }}>₹{order.totalAmount.toLocaleString('en-IN')}</p>
                           </div>
                           
                           <button style={{ 
-                            marginTop: "20px", 
-                            padding: "10px", 
+                            marginTop: "15px", 
+                            padding: "8px 12px", 
                             backgroundColor: "#fff", 
                             border: "1px solid #000", 
                             color: "#000", 
-                            fontSize: "11px", 
+                            fontSize: "10px", 
                             fontWeight: "800", 
                             textTransform: "uppercase", 
                             letterSpacing: "1px", 
@@ -238,23 +238,23 @@ function Profile({ user, setUser }) {
           </div>
 
           {/* Lookbook Studio Archives */}
-          <div style={{ background: "#fff", padding: "50px", borderRadius: "16px", boxShadow: "0 10px 40px rgba(0,0,0,0.06)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "40px", borderBottom: "1px solid #eee", paddingBottom: "20px" }}>
-              <h3 style={{ fontSize: "28px", fontWeight: "900", margin: 0, letterSpacing: "-1px" }}>Saved Masterpieces</h3>
+          <div className="responsive-profile-card" style={{ background: "#fff", padding: "30px", borderRadius: "16px", boxShadow: "0 10px 40px rgba(0,0,0,0.06)", overflow: "hidden" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px", borderBottom: "1px solid #eee", paddingBottom: "15px", flexWrap: "wrap", gap: "10px" }}>
+              <h3 style={{ fontSize: "clamp(20px, 4vw, 28px)", fontWeight: "900", margin: 0, letterSpacing: "-0.5px" }}>Saved Masterpieces</h3>
               <button 
                 onClick={() => navigate("/studio")}
-                style={{ background: "#d4af37", color: "#000", border: "none", fontSize: "11px", padding: "8px 15px", borderRadius: "4px", fontWeight: "800", textTransform: "uppercase", cursor: "pointer" }}
+                style={{ background: "#d4af37", color: "#000", border: "none", fontSize: "10px", padding: "8px 14px", borderRadius: "4px", fontWeight: "800", textTransform: "uppercase", cursor: "pointer" }}
               >
                 Open Studio
               </button>
             </div>
 
             {lookbooks.length === 0 ? (
-              <div style={{ textAlign: "center", padding: "40px", border: "1px solid #eee", borderRadius: "12px", background: "#fcfcfc" }}>
-                <p style={{ color: "#999", fontSize: "14px", fontWeight: "600" }}>No visual compositions archived yet.</p>
+              <div style={{ textAlign: "center", padding: "30px 16px", border: "1px solid #eee", borderRadius: "12px", background: "#fcfcfc" }}>
+                <p style={{ color: "#999", fontSize: "13px", fontWeight: "600", margin: 0 }}>No visual compositions archived yet.</p>
               </div>
             ) : (
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "25px" }}>
+              <div className="responsive-lookbook-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "20px" }}>
                 {lookbooks.map((look) => (
                   <div key={look._id} className="shop-product-card" style={{ border: "1px solid #eee", borderRadius: "12px", overflow: "hidden", background: "#fff" }}>
                     <div style={{ height: "180px", background: "#050505", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", position: "relative" }}>
