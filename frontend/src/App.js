@@ -17,6 +17,7 @@ import HelpCentre from "./HelpCentre";
 import AtelierAI from "./components/AtelierAI";
 import SearchOverlay from "./components/SearchOverlay";
 import HelpCorner from "./components/HelpCorner";
+import Toast from "./components/Toast";
 import { products as fallbackProducts } from "./data/products";
 
 // --- Sub-components extracted to prevent re-creation on App render ---
@@ -228,7 +229,8 @@ const AppLayout = ({
   favorites, toggleFavorite, 
   savedForLater, saveForLater, moveToCart, removeFromSaved, clearCart,
   appliedCoupon, setAppliedCoupon,
-  isSearchOpen, setIsSearchOpen, showBackToTop, fetchProducts 
+  isSearchOpen, setIsSearchOpen, showBackToTop, fetchProducts,
+  toast, setToast, showToast
 }) => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -328,10 +330,11 @@ const AppLayout = ({
         <Route path="/shop" element={<Shop products={productsList} isLoading={isLoading} addToCart={addToCart} clearCart={clearCart} favorites={favorites} toggleFavorite={toggleFavorite} />} />
         <Route path="/product/:id" element={<ProductDetail allProducts={productsList} addToCart={addToCart} clearCart={clearCart} favorites={favorites} toggleFavorite={toggleFavorite} />} />
         <Route path="/favorites" element={<Favorites favorites={favorites} toggleFavorite={toggleFavorite} addToCart={addToCart} clearCart={clearCart} />} />
-        <Route path="/login" element={<Login setUser={setUser} />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login setUser={setUser} showToast={showToast} />} />
+        <Route path="/signup" element={<Signup setUser={setUser} showToast={showToast} />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/profile" element={<Profile user={user} setUser={setUser} />} />
+        <Route path="/profile" element={<Profile user={user} setUser={setUser} showToast={showToast} />} />
+
         <Route path="/admin" element={<AdminDashboard user={user} fetchProducts={fetchProducts} />} />
         <Route path="/cart" element={
           <Cart 
@@ -369,6 +372,7 @@ const AppLayout = ({
       </div>
 
       <HelpCorner />
+      <Toast toast={toast} onClose={() => setToast(null)} />
 
       <footer style={{ background: "#131921", padding: "50px 5%", borderTop: "1px solid rgba(255,255,255,0.08)", marginTop: "60px" }}>
         <div className="responsive-footer-grid">
@@ -419,6 +423,14 @@ function App() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [toast, setToast] = useState(null);
+
+  const showToast = useCallback((message, type = "info") => {
+    setToast({ message, type });
+    setTimeout(() => {
+      setToast(null);
+    }, 4000);
+  }, []);
 
   // Optimized Throttled Scroll Listener
   useEffect(() => {
@@ -459,9 +471,8 @@ function App() {
 
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
-      if (!token) return;
-      if (token === "demo_token_123") {
-        setUser({ _id: "demo123", name: "Yugam", email: "yugambatheja5@gmail.com", role: "admin" });
+      if (!token) {
+        setUser(null);
         return;
       }
       try {
@@ -469,17 +480,20 @@ function App() {
           headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();
-        if (res.ok) setUser(data);
-        else {
-          setUser({ _id: "demo123", name: "Yugam", email: "yugambatheja5@gmail.com", role: "admin" });
+        if (res.ok && data && data._id) {
+          setUser(data);
+        } else {
+          localStorage.removeItem("token");
+          setUser(null);
         }
       } catch (err) {
-        console.error("Auth fetch failed, using demo session:", err);
-        setUser({ _id: "demo123", name: "Yugam", email: "yugambatheja5@gmail.com", role: "admin" });
+        console.error("Auth fetch failed:", err);
+        setUser(null);
       }
     };
     fetchUser();
   }, []);
+
 
   const clearCart = useCallback(() => setCart([]), []);
 
@@ -561,6 +575,9 @@ function App() {
         showBackToTop={showBackToTop}
         appliedCoupon={appliedCoupon}
         setAppliedCoupon={setAppliedCoupon}
+        toast={toast}
+        setToast={setToast}
+        showToast={showToast}
       />
     </Router>
   );

@@ -231,26 +231,26 @@ function AdminDashboard({ user, fetchProducts }) {
            </p>
         </div>
         <div className="responsive-admin-tabs" style={{ display: "flex", gap: "10px" }}>
-           {['analytics', 'orders', 'catalog', 'inventory'].map(tab => (
-             <button 
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                style={{
-                  padding: "10px 20px",
-                  borderRadius: "4px",
-                  border: activeTab === tab ? "1px solid #d4af37" : "1px solid rgba(255,255,255,0.1)",
-                  background: activeTab === tab ? "rgba(212, 175, 55, 0.1)" : "transparent",
-                  color: activeTab === tab ? "#d4af37" : "#888",
-                  fontWeight: "800",
-                  textTransform: "uppercase",
-                  fontSize: "11px",
-                  letterSpacing: "1.5px",
-                  cursor: "pointer",
-                  transition: "all 0.3s"
-                }}
-             >
-                {tab}
-             </button>
+           {["analytics", "orders", "users", "catalog", "lookbook"].map(tab => (
+              <button
+                 key={tab}
+                 onClick={() => setActiveTab(tab)}
+                 style={{
+                   padding: "10px 20px",
+                   borderRadius: "4px",
+                   border: activeTab === tab ? "1px solid #d4af37" : "1px solid rgba(255,255,255,0.1)",
+                   background: activeTab === tab ? "rgba(212, 175, 55, 0.1)" : "transparent",
+                   color: activeTab === tab ? "#d4af37" : "#888",
+                   fontWeight: "800",
+                   textTransform: "uppercase",
+                   fontSize: "11px",
+                   letterSpacing: "1.5px",
+                   cursor: "pointer",
+                   transition: "all 0.3s"
+                 }}
+              >
+                 {tab === 'users' ? '🛡️ USER SECURITY' : tab}
+              </button>
            ))}
         </div>
       </div>

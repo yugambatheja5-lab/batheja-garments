@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import "./auth.css";
 
 function ForgotPassword() {
   const [step, setStep] = useState(1);
@@ -61,46 +62,47 @@ function ForgotPassword() {
   };
 
   return (
-    <div style={{ minHeight: "80vh", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#fafafa", padding: "40px 20px" }}>
-      <div style={{ width: "100%", maxWidth: "450px", background: "#fff", padding: "50px 40px", borderRadius: "16px", boxShadow: "0 10px 40px rgba(0,0,0,0.08)" }}>
-        <h2 style={{ fontSize: "28px", fontWeight: "800", marginBottom: "10px", textAlign: "center", textTransform: "uppercase", letterSpacing: "1px" }}>
-          {step === 1 ? "Forgot Password" : "Secure Reset"}
-        </h2>
-        <p style={{ textAlign: "center", color: "#666", marginBottom: "30px", fontSize: "15px", lineHeight: "1.5" }}>
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2>{step === 1 ? "Forgot Password" : "Secure Reset"}</h2>
+        <p>
           {step === 1 
             ? "Enter your registered email or phone number and we will securely send you a 6-digit verification code."
             : "Enter the code you received along with your brand new password."}
         </p>
 
-        {error && <div style={{ backgroundColor: "#ffecec", color: "#ff4d4d", padding: "12px", borderRadius: "8px", marginBottom: "20px", fontSize: "14px", textAlign: "center", fontWeight: "600" }}>{error}</div>}
-        {success && step === 2 && <div style={{ backgroundColor: "#e8ffe8", color: "#00a300", padding: "12px", borderRadius: "8px", marginBottom: "10px", fontSize: "14px", textAlign: "center", fontWeight: "600" }}>{success}</div>}
+        {error && <div className="auth-message auth-error">{error}</div>}
+        {success && step === 2 && <div className="auth-message auth-success">{success}</div>}
 
         {step === 1 ? (
-          <form onSubmit={requestOTP} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <div>
-              <label style={{ display: "block", fontSize: "13px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "8px", color: "#555" }}>Email or Phone</label>
+          <form onSubmit={requestOTP} className="auth-form">
+            <div className="form-group">
+              <label className="form-label">Email or Phone</label>
               <input 
                 type="text" 
                 placeholder="example@mail.com OR 9876543210"
                 required
                 value={identifier}
                 onChange={e => setIdentifier(e.target.value)}
-                style={{ width: "100%", padding: "15px", borderRadius: "8px", border: "1px solid #ddd", fontSize: "15px", outline: "none", boxSizing: "border-box" }} 
+                className="form-input"
+                autoComplete="username"
+                inputMode="text"
               />
             </div>
             
             <button 
               type="submit" 
               disabled={loading}
-              style={{ marginTop: "10px", padding: "16px", backgroundColor: "#000", color: "#fff", border: "none", borderRadius: "8px", fontSize: "16px", fontWeight: "700", cursor: loading ? "not-allowed" : "pointer", textTransform: "uppercase", letterSpacing: "1px", boxShadow: "0 10px 20px rgba(0,0,0,0.15)", opacity: loading ? 0.7 : 1 }}
+              className={`auth-button ${loading ? "loading-state" : ""}`}
+              aria-busy={loading}
             >
               {loading ? "Sending..." : "Send Verification Code"}
             </button>
           </form>
         ) : (
-          <form onSubmit={resetPassword} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <div>
-              <label style={{ display: "block", fontSize: "13px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "8px", color: "#555" }}>6-Digit OTP</label>
+          <form onSubmit={resetPassword} className="auth-form">
+            <div className="form-group">
+              <label className="form-label">6-Digit OTP</label>
               <input 
                 type="text" 
                 inputMode="numeric"
@@ -110,44 +112,48 @@ function ForgotPassword() {
                 required
                 value={otpCode}
                 onChange={e => setOtpCode(e.target.value.replace(/\D/g, ''))}
-                style={{ width: "100%", padding: "15px", borderRadius: "8px", border: "1px solid #ddd", fontSize: "20px", outline: "none", boxSizing: "border-box", textAlign: "center", letterSpacing: "10px", fontWeight: "800" }} 
+                className="form-input"
+                style={{ fontSize: "20px", textAlign: "center", letterSpacing: "8px", fontWeight: "800" }}
               />
             </div>
-            <div>
-              <label style={{ display: "block", fontSize: "13px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "8px", color: "#555" }}>New Password</label>
+            <div className="form-group">
+              <label className="form-label">New Password</label>
               <input 
                 type="password" 
                 placeholder="••••••••"
                 required
                 value={newPassword}
                 onChange={e => setNewPassword(e.target.value)}
-                style={{ width: "100%", padding: "15px", borderRadius: "8px", border: "1px solid #ddd", fontSize: "15px", outline: "none", boxSizing: "border-box" }} 
+                className="form-input"
+                autoComplete="new-password"
               />
             </div>
-            <div>
-              <label style={{ display: "block", fontSize: "13px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "8px", color: "#555" }}>Confirm New Password</label>
+            <div className="form-group">
+              <label className="form-label">Confirm New Password</label>
               <input 
                 type="password" 
                 placeholder="••••••••"
                 required
                 value={confirmPassword}
                 onChange={e => setConfirmPassword(e.target.value)}
-                style={{ width: "100%", padding: "15px", borderRadius: "8px", border: "1px solid #ddd", fontSize: "15px", outline: "none", boxSizing: "border-box" }} 
+                className="form-input"
+                autoComplete="new-password"
               />
             </div>
 
             <button 
               type="submit" 
               disabled={loading}
-              style={{ marginTop: "10px", padding: "16px", backgroundColor: "#ff4d4d", color: "#fff", border: "none", borderRadius: "8px", fontSize: "16px", fontWeight: "700", cursor: loading ? "not-allowed" : "pointer", textTransform: "uppercase", letterSpacing: "1px", boxShadow: "0 10px 20px rgba(0,0,0,0.15)", opacity: loading ? 0.7 : 1 }}
+              className={`auth-button ${loading ? "loading-state" : ""}`}
+              aria-busy={loading}
             >
               {loading ? "Verifying..." : "Reset Securely"}
             </button>
           </form>
         )}
 
-        <p style={{ textAlign: "center", marginTop: "30px", fontSize: "15px", color: "#666" }}>
-          Remembered your password? <Link to="/login" style={{ color: "#000", fontWeight: "700", textDecoration: "none" }}>Log In</Link>
+        <p className="auth-footer">
+          Remembered your password? <Link to="/login">Log In</Link>
         </p>
       </div>
     </div>
