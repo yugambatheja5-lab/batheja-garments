@@ -44,11 +44,8 @@ function Login({ setUser, showToast }) {
       if (setUser) setUser(data.user);
       if (showToast) showToast(`Welcome back, ${data.user.name}!`, "success");
 
-      if (data.user.role === "admin") {
-        navigate("/admin");
-      } else {
-        navigate("/profile");
-      }
+      const redirectTarget = location.state?.from || "/";
+      navigate(redirectTarget);
     } catch (err) {
       setError(err.message);
       if (showToast) showToast(err.message, "error");
@@ -65,11 +62,8 @@ function Login({ setUser, showToast }) {
     setPendingOtpIdentifier(null);
     if (showToast) showToast("Account verified successfully! Welcome back.", "success");
     
-    if (verifyData.user?.role === "admin") {
-      navigate("/admin");
-    } else {
-      navigate("/profile");
-    }
+    const redirectTarget = location.state?.from || "/";
+    navigate(redirectTarget);
   };
 
   return (

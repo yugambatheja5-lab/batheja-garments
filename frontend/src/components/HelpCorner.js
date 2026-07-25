@@ -50,6 +50,7 @@ const HelpCorner = () => {
 
     return (
         <div 
+            className="desktop-help-corner"
             style={buttonStyle}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}

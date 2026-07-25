@@ -98,7 +98,7 @@ app.post('/api/analytics/search', async (req, res) => {
   }
 });
 
-app.get('/api/analytics/popular', async (req, res) => {
+app.get('/api/analytics/popular', [authMiddleware, adminMiddleware], async (req, res) => {
   try {
     // Aggregation pipeline to count occurrences of search terms
     const popularSearches = await SearchLog.aggregate([

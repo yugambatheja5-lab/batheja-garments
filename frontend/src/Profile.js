@@ -180,8 +180,33 @@ function Profile({ user, setUser, showToast }) {
         />
       )}
 
+      {/* Admin Shortcut Banner */}
+      {user?.role === "admin" && (
+        <div style={{ backgroundColor: "#1c1917", borderBottom: "1px solid #d4af37", padding: "12px 20px", display: "flex", justifyContent: "center", alignItems: "center", gap: "15px", flexWrap: "wrap" }}>
+          <span style={{ color: "#d4af37", fontSize: "13px", fontWeight: "700", letterSpacing: "1px" }}>🛡️ ADMIN PRIVILEGES ACTIVE</span>
+          <button 
+            onClick={() => navigate('/admin')}
+            style={{ 
+              backgroundColor: "#d4af37", 
+              color: "#000", 
+              border: "none", 
+              padding: "6px 14px", 
+              borderRadius: "4px", 
+              fontWeight: "800", 
+              fontSize: "11px", 
+              letterSpacing: "1px", 
+              textTransform: "uppercase",
+              cursor: "pointer"
+            }}
+          >
+            Go to Atelier HQ Command Center →
+          </button>
+        </div>
+      )}
+
       {/* Profile Header */}
       <div style={{ backgroundColor: "#000", color: "#fff", padding: "40px 16px", textAlign: "center" }}>
+        <div style={{ fontSize: "11px", fontWeight: "800", letterSpacing: "3px", color: "var(--champagne)", textTransform: "uppercase", marginBottom: "8px" }}>Client Atelier Lounge</div>
         <h1 style={{ fontSize: "clamp(24px, 5vw, 42px)", fontWeight: "800", textTransform: "uppercase", letterSpacing: "2px", marginBottom: "10px" }}>Member Profile</h1>
         <p style={{ fontSize: "clamp(13px, 2vw, 16px)", color: "#ccc", maxWidth: "600px", margin: "0 auto" }}>
           Track your luxury acquisitions and manage your shipping preferences.

@@ -24,8 +24,7 @@ function AdminDashboard({ user, fetchProducts }) {
     if (!user) {
       navigate('/login');
     } else if (user.role !== 'admin') {
-      const timer = setTimeout(() => navigate('/'), 3000);
-      return () => clearTimeout(timer);
+      navigate('/');
     }
   }, [user, navigate]);
 
@@ -215,7 +214,25 @@ function AdminDashboard({ user, fetchProducts }) {
     setIsModalOpen(true);
   };
 
-  if (!user) return null;
+  if (!user || user.role !== 'admin') {
+    return (
+      <div style={{ minHeight: "80vh", backgroundColor: "#0a0a0a", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", padding: "40px", textAlign: "center" }}>
+        <div style={{ background: "#111", border: "1px solid #ff4d4d", borderRadius: "12px", padding: "40px 30px", maxWidth: "450px", boxShadow: "0 20px 50px rgba(0,0,0,0.8)" }}>
+          <div style={{ fontSize: "48px", marginBottom: "15px" }}>🛡️</div>
+          <h2 style={{ fontSize: "20px", fontWeight: "900", letterSpacing: "2px", color: "#ff4d4d", marginBottom: "10px", textTransform: "uppercase" }}>Restricted Atelier Access</h2>
+          <p style={{ color: "#aaa", fontSize: "13px", lineHeight: "1.6", marginBottom: "25px" }}>
+            Atelier HQ is strictly reserved for authorized Belvedere Administrators. Sensitive operations and customer telemetry are protected.
+          </p>
+          <button 
+            onClick={() => navigate('/')}
+            style={{ background: "#d4af37", color: "#000", border: "none", padding: "12px 24px", borderRadius: "4px", fontWeight: "900", fontSize: "11px", letterSpacing: "1px", cursor: "pointer", textTransform: "uppercase" }}
+          >
+            Return to Main Collection
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const lowStockProducts = productsList.filter(p => p.stock < 10);
 
@@ -372,49 +389,49 @@ function AdminDashboard({ user, fetchProducts }) {
 
         {/* PRODUCT MODAL */}
         {isModalOpen && (
-           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.9)", backdropFilter: "blur(10px)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px" }}>
-              <div style={{ width: "100%", maxWidth: "800px", background: "#111", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "12px", overflow: "hidden", animation: "modalSlideUp 0.4s ease" }}>
-                 <div style={{ padding: "30px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", justifyContent: "space-between" }}>
-                    <h3 style={{ margin: 0, textTransform: "uppercase", letterSpacing: "2px", fontWeight: "900" }}>{editingProduct ? "Edit Portfolio Item" : "New Catalog Acquisition"}</h3>
-                    <button onClick={() => setIsModalOpen(false)} style={{ background: "none", border: "none", color: "#888", fontSize: "20px", cursor: "pointer" }}>×</button>
+           <div className="admin-modal-overlay" style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.9)", backdropFilter: "blur(10px)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "16px", boxSizing: "border-box" }}>
+              <div className="admin-modal-content" style={{ width: "100%", maxWidth: "800px", maxHeight: "90vh", overflowY: "auto", background: "#111", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "12px", animation: "modalSlideUp 0.4s ease" }}>
+                 <div style={{ padding: "20px 25px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, background: "#111", zIndex: 10 }}>
+                    <h3 style={{ margin: 0, textTransform: "uppercase", letterSpacing: "2px", fontWeight: "900", fontSize: "16px" }}>{editingProduct ? "Edit Portfolio Item" : "New Catalog Acquisition"}</h3>
+                    <button onClick={() => setIsModalOpen(false)} style={{ background: "none", border: "none", color: "#888", fontSize: "24px", cursor: "pointer", padding: "5px" }}>×</button>
                  </div>
-                 <form onSubmit={handleSaveProduct} style={{ padding: "40px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "30px" }}>
+                 <form onSubmit={handleSaveProduct} className="admin-modal-form">
                     <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
                        <div>
                           <label style={{ fontSize: "10px", fontWeight: "800", color: "#555", textTransform: "uppercase", marginBottom: "8px", display: "block" }}>Item Title</label>
-                          <input type="text" value={form.name} onChange={e => setForm({...form, name: e.target.value})} style={{ width: "100%", background: "#0c0c0c", border: "1px solid #222", padding: "12px", color: "#fff", borderRadius: "4px" }} required />
+                          <input type="text" value={form.name} onChange={e => setForm({...form, name: e.target.value})} style={{ width: "100%", boxSizing: "border-box", background: "#0c0c0c", border: "1px solid #222", padding: "12px", color: "#fff", borderRadius: "4px" }} required />
                        </div>
-                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+                       <div className="admin-modal-dual-input" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px" }}>
                           <div>
                              <label style={{ fontSize: "10px", fontWeight: "800", color: "#555", textTransform: "uppercase", marginBottom: "8px", display: "block" }}>Valuation (INR)</label>
-                             <input type="number" value={form.price} onChange={e => setForm({...form, price: e.target.value})} style={{ width: "100%", background: "#0c0c0c", border: "1px solid #222", padding: "12px", color: "#fff", borderRadius: "4px" }} required />
+                             <input type="number" value={form.price} onChange={e => setForm({...form, price: e.target.value})} style={{ width: "100%", boxSizing: "border-box", background: "#0c0c0c", border: "1px solid #222", padding: "12px", color: "#fff", borderRadius: "4px" }} required />
                           </div>
                           <div>
                              <label style={{ fontSize: "10px", fontWeight: "800", color: "#555", textTransform: "uppercase", marginBottom: "8px", display: "block" }}>Unit existence</label>
-                             <input type="number" value={form.stock} onChange={e => setForm({...form, stock: e.target.value})} style={{ width: "100%", background: "#0c0c0c", border: "1px solid #222", padding: "12px", color: "#fff", borderRadius: "4px" }} required />
+                             <input type="number" value={form.stock} onChange={e => setForm({...form, stock: e.target.value})} style={{ width: "100%", boxSizing: "border-box", background: "#0c0c0c", border: "1px solid #222", padding: "12px", color: "#fff", borderRadius: "4px" }} required />
                           </div>
                        </div>
                        <div>
                           <label style={{ fontSize: "10px", fontWeight: "800", color: "#555", textTransform: "uppercase", marginBottom: "8px", display: "block" }}>Classification</label>
-                          <input type="text" value={form.category} onChange={e => setForm({...form, category: e.target.value})} placeholder="e.g. Jacket, Footwear" style={{ width: "100%", background: "#0c0c0c", border: "1px solid #222", padding: "12px", color: "#fff", borderRadius: "4px" }} required />
+                          <input type="text" value={form.category} onChange={e => setForm({...form, category: e.target.value})} placeholder="e.g. Jacket, Footwear" style={{ width: "100%", boxSizing: "border-box", background: "#0c0c0c", border: "1px solid #222", padding: "12px", color: "#fff", borderRadius: "4px" }} required />
                        </div>
                        <div>
                           <label style={{ fontSize: "10px", fontWeight: "800", color: "#555", textTransform: "uppercase", marginBottom: "8px", display: "block" }}>Collection Narrative</label>
-                          <textarea value={form.description} onChange={e => setForm({...form, description: e.target.value})} style={{ width: "100%", background: "#0c0c0c", border: "1px solid #222", padding: "12px", color: "#fff", borderRadius: "4px", minHeight: "80px" }} />
+                          <textarea value={form.description} onChange={e => setForm({...form, description: e.target.value})} style={{ width: "100%", boxSizing: "border-box", background: "#0c0c0c", border: "1px solid #222", padding: "12px", color: "#fff", borderRadius: "4px", minHeight: "80px" }} />
                        </div>
                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                           <input type="checkbox" id="featured" checked={form.isFeatured} onChange={e => setForm({...form, isFeatured: e.target.checked})} style={{ width: "18px", height: "18px", cursor: "pointer", accentColor: "#d4af37" }} />
-                          <label htmlFor="featured" style={{ fontSize: "12px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "1px", cursor: "pointer" }}>MARK AS NEW COLLECTION / FEATURED</label>
+                          <label htmlFor="featured" style={{ fontSize: "11px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "1px", cursor: "pointer" }}>MARK AS NEW COLLECTION / FEATURED</label>
                        </div>
                        <div style={{ border: "1px solid #333", padding: "15px", borderRadius: "8px" }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "15px" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: form.isVaultItem ? "15px" : 0 }}>
                              <input type="checkbox" id="vault" checked={form.isVaultItem} onChange={e => setForm({...form, isVaultItem: e.target.checked})} style={{ width: "18px", height: "18px", cursor: "pointer", accentColor: "#d4af37" }} />
-                             <label htmlFor="vault" style={{ fontSize: "12px", fontWeight: "900", textTransform: "uppercase", letterSpacing: "1px", cursor: "pointer", color: "#d4af37" }}>LOCK IN MASTERPIECE VAULT 🛡️</label>
+                             <label htmlFor="vault" style={{ fontSize: "11px", fontWeight: "900", textTransform: "uppercase", letterSpacing: "1px", cursor: "pointer", color: "#d4af37" }}>LOCK IN MASTERPIECE VAULT 🛡️</label>
                           </div>
                           {form.isVaultItem && (
                             <div>
                               <label style={{ fontSize: "10px", fontWeight: "800", color: "#555", textTransform: "uppercase", marginBottom: "8px", display: "block" }}>DROP RELEASE DATE</label>
-                              <input type="date" value={form.releaseDate ? form.releaseDate.substring(0, 10) : ""} onChange={e => setForm({...form, releaseDate: e.target.value})} style={{ width: "100%", background: "#000", border: "1px solid #d4af37", padding: "10px", color: "#fff", borderRadius: "4px" }} />
+                              <input type="date" value={form.releaseDate ? form.releaseDate.substring(0, 10) : ""} onChange={e => setForm({...form, releaseDate: e.target.value})} style={{ width: "100%", boxSizing: "border-box", background: "#000", border: "1px solid #d4af37", padding: "10px", color: "#fff", borderRadius: "4px" }} />
                             </div>
                           )}
                        </div>
@@ -423,7 +440,7 @@ function AdminDashboard({ user, fetchProducts }) {
                     <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
                        <div>
                           <label style={{ fontSize: "10px", fontWeight: "800", color: "#555", textTransform: "uppercase", marginBottom: "8px", display: "block" }}>Asset Representation (Cloudinary)</label>
-                          <div style={{ width: "100%", height: "200px", border: "2px dashed #222", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", position: "relative" }}>
+                          <div style={{ width: "100%", height: "180px", border: "2px dashed #222", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", position: "relative" }}>
                              {form.image ? (
                                 <img src={form.image} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                              ) : (
@@ -433,9 +450,9 @@ function AdminDashboard({ user, fetchProducts }) {
                                 <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "800" }}>UPLOADING TO CDN...</div>
                              )}
                           </div>
-                          <input type="file" onChange={handleImageUpload} style={{ marginTop: "15px", fontSize: "11px" }} />
+                          <input type="file" onChange={handleImageUpload} style={{ marginTop: "15px", fontSize: "11px", width: "100%", boxSizing: "border-box" }} />
                        </div>
-                       <button type="submit" style={{ marginTop: "auto", padding: "18px", background: "#fff", color: "#000", border: "none", borderRadius: "4px", fontWeight: "900", letterSpacing: "2px", textTransform: "uppercase", cursor: "pointer" }}>
+                       <button type="submit" style={{ marginTop: "auto", padding: "16px", background: "#fff", color: "#000", border: "none", borderRadius: "4px", fontWeight: "900", letterSpacing: "2px", textTransform: "uppercase", cursor: "pointer", width: "100%" }}>
                           {editingProduct ? "EXECUTE UPDATES" : "FINALIZE ACQUISITION"}
                        </button>
                     </div>
@@ -451,58 +468,59 @@ function AdminDashboard({ user, fetchProducts }) {
                 Order Fulfillment Queue
              </h2>
              <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-                {orders.map(order => (
-                  <div key={order._id} style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "8px", padding: "25px", display: "grid", gridTemplateColumns: "1fr 2fr 1.5fr 1fr", gap: "20px", alignItems: "center" }}>
-                     <div>
-                        <p style={{ fontSize: "10px", color: "#555", fontWeight: "800", textTransform: "uppercase" }}>Order ID</p>
-                        <p style={{ fontSize: "14px", fontWeight: "700" }}>#{order._id.substring(18).toUpperCase()}</p>
-                     </div>
-                     <div>
-                        <p style={{ fontSize: "10px", color: "#555", fontWeight: "800", textTransform: "uppercase" }}>Acquirer</p>
-                        <p style={{ fontSize: "14px", fontWeight: "700" }}>{order.user?.name || "Guest"}</p>
-                        <p style={{ fontSize: "11px", color: "#888" }}>{order.user?.email}</p>
-                     </div>
-                     <div>
-                        <p style={{ fontSize: "10px", color: "#555", fontWeight: "800", textTransform: "uppercase" }}>Value</p>
-                        <p style={{ fontSize: "16px", fontWeight: "800" }}>₹{order.totalAmount.toLocaleString('en-IN')}</p>
-                        <p style={{ 
-                          fontSize: "10px", 
-                          fontWeight: "800", 
-                          color: order.paymentStatus === 'Completed' ? '#38a169' : '#d69e2e' 
-                        }}>
-                          {order.paymentStatus === 'Completed' ? '✔ PAID' : '⌛ PENDING / COD'}
-                        </p>
-                     </div>
-                     <div style={{ textAlign: "right", display: "flex", flexDirection: "column", gap: "10px" }}>
-                        <select 
-                           value={order.orderStatus} 
-                           onChange={(e) => updateOrderStatus(order._id, e.target.value)}
-                           style={{ background: "#000", color: "#d4af37", border: "1px solid #d4af37", padding: "8px", borderRadius: "4px", fontSize: "11px", fontWeight: "800", cursor: "pointer" }}
-                        >
-                           <option value="Processing">Processing</option>
-                           <option value="Shipped">Shipped</option>
-                           <option value="Delivered">Delivered</option>
-                           <option value="Cancelled">Cancelled</option>
-                        </select>
-                        
-                        <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "10px" }}>
-                           <p style={{ fontSize: "8px", color: "#555", fontWeight: "900", textTransform: "uppercase", marginBottom: "5px" }}>Craftsmanship Journey</p>
-                           <select 
-                              value={order.bespokeStatus || "Consultation"} 
-                              onChange={(e) => updateBespokeStatus(order._id, e.target.value)}
-                              style={{ background: "#111", color: "#fff", border: "1px solid #333", padding: "6px", borderRadius: "4px", fontSize: "10px", fontWeight: "700", cursor: "pointer", width: "100%" }}
-                           >
-                              <option value="Consultation">Consultation</option>
-                              <option value="Design & Sourcing">Design & Sourcing</option>
-                              <option value="Drafting & Cutting">Drafting & Cutting</option>
-                              <option value="Hand-Stitching">Hand-Stitching</option>
-                              <option value="Final Fitting">Final Fitting</option>
-                              <option value="In Transit">In Transit</option>
-                           </select>
-                        </div>
+                 {orders.map(order => (
+                   <div key={order._id} className="admin-order-card" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "8px", padding: "20px 25px", width: "100%", boxSizing: "border-box" }}>
+                      <div>
+                         <p style={{ fontSize: "10px", color: "#555", fontWeight: "800", textTransform: "uppercase" }}>Order ID</p>
+                         <p style={{ fontSize: "14px", fontWeight: "700", wordBreak: "break-word" }}>#{order._id.substring(18).toUpperCase()}</p>
                       </div>
-                  </div>
-                ))}
+                      <div>
+                         <p style={{ fontSize: "10px", color: "#555", fontWeight: "800", textTransform: "uppercase" }}>Acquirer</p>
+                         <p style={{ fontSize: "14px", fontWeight: "700" }}>{order.user?.name || "Guest"}</p>
+                         <p style={{ fontSize: "11px", color: "#888", wordBreak: "break-word" }}>{order.user?.email}</p>
+                      </div>
+                      <div>
+                         <p style={{ fontSize: "10px", color: "#555", fontWeight: "800", textTransform: "uppercase" }}>Value</p>
+                         <p style={{ fontSize: "16px", fontWeight: "800" }}>₹{order.totalAmount.toLocaleString('en-IN')}</p>
+                         <p style={{ 
+                           fontSize: "10px", 
+                           fontWeight: "800", 
+                           color: order.paymentStatus === 'Completed' ? '#38a169' : '#d69e2e' 
+                         }}>
+                           {order.paymentStatus === 'Completed' ? '✔ PAID' : '⌛ PENDING / COD'}
+                         </p>
+                      </div>
+                      <div className="admin-order-actions" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                         <label style={{ fontSize: "9px", color: "#666", fontWeight: "800", textTransform: "uppercase" }}>Order Status</label>
+                         <select 
+                            value={order.orderStatus} 
+                            onChange={(e) => updateOrderStatus(order._id, e.target.value)}
+                            style={{ background: "#000", color: "#d4af37", border: "1px solid #d4af37", padding: "8px", borderRadius: "4px", fontSize: "11px", fontWeight: "800", cursor: "pointer", width: "100%", boxSizing: "border-box" }}
+                         >
+                            <option value="Processing">Processing</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Cancelled">Cancelled</option>
+                         </select>
+                         
+                         <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "10px" }}>
+                            <p style={{ fontSize: "9px", color: "#666", fontWeight: "800", textTransform: "uppercase", marginBottom: "5px" }}>Craftsmanship Journey</p>
+                            <select 
+                               value={order.bespokeStatus || "Consultation"} 
+                               onChange={(e) => updateBespokeStatus(order._id, e.target.value)}
+                               style={{ background: "#111", color: "#fff", border: "1px solid #333", padding: "6px", borderRadius: "4px", fontSize: "10px", fontWeight: "700", cursor: "pointer", width: "100%", boxSizing: "border-box" }}
+                            >
+                               <option value="Consultation">Consultation</option>
+                               <option value="Design & Sourcing">Design & Sourcing</option>
+                               <option value="Drafting & Cutting">Drafting & Cutting</option>
+                               <option value="Hand-Stitching">Hand-Stitching</option>
+                               <option value="Final Fitting">Final Fitting</option>
+                               <option value="In Transit">In Transit</option>
+                            </select>
+                         </div>
+                      </div>
+                   </div>
+                 ))}
              </div>
           </div>
         )}

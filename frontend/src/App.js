@@ -14,7 +14,6 @@ import Checkout from "./Checkout";
 import AdminDashboard from "./AdminDashboard";
 import ForgotPassword from "./ForgotPassword";
 import HelpCentre from "./HelpCentre";
-import AtelierAI from "./components/AtelierAI";
 import SearchOverlay from "./components/SearchOverlay";
 import HelpCorner from "./components/HelpCorner";
 import Toast from "./components/Toast";
@@ -82,15 +81,37 @@ const NavLinkDropdown = ({ label, targetKey, productsList, linkStyle }) => {
         zIndex: 999,
         willChange: "transform, opacity"
       }}>
-        <div style={{ borderRight: "1px solid #eee", paddingRight: "60px" }}>
-          <h3 style={{ margin: 0, fontSize: "42px", fontWeight: "900", letterSpacing: "6px", textTransform: "uppercase" }}>{label}</h3>
-          <p style={{ marginTop: "20px", fontSize: "14px", color: "var(--text-muted)", lineHeight: "1.8" }}>
-             The absolute pinnacle of luxury. Expertly tailored specimens for the elite {label.toLowerCase()} wardrobe.
-          </p>
-          <Link to="/shop" state={{ department: targetKey }} onClick={() => setIsHovered(false)} style={{ marginTop: "40px", display: "inline-block", textDecoration: "none" }}>
-            <span style={{ fontWeight: "900", textTransform: "uppercase", fontSize: "12px", letterSpacing: "3px", color: "#000", border: "1px solid #000", padding: "15px 35px", borderRadius: "1px" }}>
-              Explore Entire Series
-            </span>
+        <div style={{ borderRight: "1px solid #eee", paddingRight: "50px", display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "space-between" }}>
+          <div>
+            <h3 style={{ margin: 0, fontSize: "38px", fontWeight: "900", letterSpacing: "6px", textTransform: "uppercase", color: "#111" }}>{label}</h3>
+            <p style={{ marginTop: "15px", fontSize: "13px", color: "var(--text-muted)", lineHeight: "1.7" }}>
+               The absolute pinnacle of luxury. Expertly tailored specimens for the elite {label.toLowerCase()} wardrobe.
+            </p>
+          </div>
+          <Link 
+            to="/shop" 
+            state={{ department: targetKey }} 
+            onClick={() => setIsHovered(false)} 
+            style={{ 
+              marginTop: "25px", 
+              display: "inline-flex", 
+              alignItems: "center", 
+              justifyContent: "center", 
+              padding: "14px 28px", 
+              backgroundColor: "#000", 
+              color: "#fff", 
+              border: "1px solid #000", 
+              borderRadius: "2px", 
+              textDecoration: "none", 
+              fontWeight: "900", 
+              textTransform: "uppercase", 
+              fontSize: "11px", 
+              letterSpacing: "2.5px", 
+              whiteSpace: "nowrap",
+              transition: "all 0.3s ease"
+            }}
+          >
+            Explore Entire Series →
           </Link>
         </div>
 
@@ -311,6 +332,30 @@ const AppLayout = ({
             <span style={{ fontSize: "11px", fontWeight: "900", color: "var(--champagne)", letterSpacing: "2px", textTransform: "uppercase" }}>Atelier Menu</span>
             <button onClick={() => setIsMobileMenuOpen(false)} style={{ background: "none", border: "none", color: "#fff", fontSize: "22px", cursor: "pointer", padding: "5px" }}>✕</button>
           </div>
+          {user?.role === "admin" && (
+            <Link 
+              to="/admin" 
+              onClick={() => setIsMobileMenuOpen(false)} 
+              style={{ 
+                color: "var(--champagne)", 
+                textDecoration: "none", 
+                fontSize: "15px", 
+                fontWeight: "900", 
+                letterSpacing: "2px", 
+                textTransform: "uppercase",
+                background: "rgba(212,175,55,0.15)",
+                padding: "12px 16px",
+                borderRadius: "6px",
+                border: "1px solid var(--champagne)",
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                marginBottom: "10px"
+              }}
+            >
+              <span>🛡️</span> ATELIER HQ (ADMIN DASHBOARD)
+            </Link>
+          )}
           <Link to="/shop" state={{ department: 'Men' }} onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "16px", fontWeight: "800", letterSpacing: "2px", textTransform: "uppercase" }}>MEN'S COLLECTION</Link>
           <Link to="/shop" state={{ department: 'Women' }} onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "16px", fontWeight: "800", letterSpacing: "2px", textTransform: "uppercase" }}>WOMEN'S COLLECTION</Link>
           <Link to="/shop" state={{ department: 'Kids' }} onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "16px", fontWeight: "800", letterSpacing: "2px", textTransform: "uppercase" }}>KIDS COLLECTION</Link>
@@ -319,7 +364,7 @@ const AppLayout = ({
           <Link to="/favorites" onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "15px", fontWeight: "700" }}>FAVORITES ({favorites.length})</Link>
           <Link to="/cart" onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "15px", fontWeight: "700" }}>BAG ({cart.length})</Link>
           <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#fff", textDecoration: "none", fontSize: "15px", fontWeight: "700" }}>MY PROFILE</Link>
-          <Link to="/help" onClick={() => setIsMobileMenuOpen(false)} style={{ color: "#aaa", textDecoration: "none", fontSize: "14px" }}>HELP & SUPPORT</Link>
+          <Link to="/help" onClick={() => setIsMobileMenuOpen(false)} style={{ color: "var(--champagne)", textDecoration: "none", fontSize: "15px", fontWeight: "800", letterSpacing: "1px", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "8px" }}><span>❓</span> HELP & SUPPORT CENTRE</Link>
         </div>
       )}
 
@@ -355,8 +400,6 @@ const AppLayout = ({
         } />
         <Route path="/help" element={<HelpCentre />} />
       </Routes>
-
-      <AtelierAI user={user} fetchProducts={fetchProducts} />
       
       <SearchOverlay 
         isOpen={isSearchOpen} 
@@ -370,7 +413,6 @@ const AppLayout = ({
       >
         <span style={{ fontSize: "24px" }}>↑</span>
       </div>
-
       <HelpCorner />
       <Toast toast={toast} onClose={() => setToast(null)} />
 

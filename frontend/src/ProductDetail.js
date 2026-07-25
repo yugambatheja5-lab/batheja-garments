@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 import { triggerCartAnimation } from "./utils/animations";
-import Magnifier from "./components/Magnifier";
 
 function ProductDetail({ allProducts = [], addToCart, clearCart, favorites, toggleFavorite }) {
   const { id } = useParams();
@@ -137,7 +136,11 @@ function ProductDetail({ allProducts = [], addToCart, clearCart, favorites, togg
             >
               {isFav ? "❤️" : "🤍"}
             </button>
-            <Magnifier src={mainImage} alt={product.name} />
+            <img 
+              src={mainImage} 
+              alt={product.name} 
+              style={{ width: "100%", height: "100%", minHeight: "500px", objectFit: "cover", backgroundColor: "#0a0a0a", border: "1px solid rgba(255,255,255,0.05)" }} 
+            />
           </div>
         </div>
 

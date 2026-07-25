@@ -77,7 +77,7 @@ function Signup({ setUser, showToast }) {
         localStorage.setItem("token", data.token);
         if (setUser) setUser(data.user);
         if (showToast) showToast("Account verified & activated!", "success");
-        navigate("/profile");
+        navigate("/");
       }
     } catch (err) {
       setError(err.message);
