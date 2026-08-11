@@ -77,36 +77,6 @@ console.log("Routes loaded ✅");
 
 const JWT_SECRET = process.env.JWT_SECRET || 'batheja_super_secret_key';
 
-// --- ANALYTICS ROUTES ---
-app.post('/api/analytics/search', async (req, res) => {
-  try {
-    const { term } = req.body;
-    if (!term || term.trim().length === 0) return res.status(400).json({ error: "Empty search term" });
-    
-    // Save exactly what the user searched
-    const log = new SearchLog({ term: term.trim().toLowerCase() });
-    await log.save();
-    
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.get('/api/analytics/popular', [authMiddleware, adminMiddleware], async (req, res) => {
-  try {
-    // Aggregation pipeline to count occurrences of search terms
-    const popularSearches = await SearchLog.aggregate([
-      { $group: { _id: "$term", count: { $sum: 1 } } },
-      { $sort: { count: -1 } },
-      { $limit: 10 }
-    ]);
-    res.json(popularSearches);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
 // --- EXPLICIT ROLE & ACCESS CONTROL CONFIGURATION ---
 const ADMIN_EMAILS = [
   "admin@batheja.com",
@@ -117,27 +87,6 @@ const ADMIN_EMAILS = [
 const getRoleForEmail = (email) => {
   return ADMIN_EMAILS.includes(email.toLowerCase()) ? "admin" : "user";
 };
-
-// Auto-seed default Administrator account on database connection
-mongoose.connection.once("open", async () => {
-  try {
-    const adminEmail = "admin@batheja.com";
-    let adminUser = await User.findOne({ email: adminEmail });
-    if (!adminUser) {
-      const hashedPassword = await bcrypt.hash("admin123", 10);
-      adminUser = new User({
-        name: "Atelier Administrator",
-        email: adminEmail,
-        password: hashedPassword,
-        role: "admin"
-      });
-      await adminUser.save();
-      console.log("🛡️ Official Admin account created: admin@batheja.com (password: admin123)");
-    }
-  } catch (err) {
-    console.error("Admin seed error:", err.message);
-  }
-});
 
 // --- AUTHENTICATION & AUTHORIZATION MIDDLEWARES ---
 const authMiddleware = (req, res, next) => {
@@ -167,6 +116,57 @@ const adminMiddleware = async (req, res, next) => {
     return res.status(500).json({ error: "Authorization verification failed." });
   }
 };
+
+// Auto-seed default Administrator account on database connection
+mongoose.connection.once("open", async () => {
+  try {
+    const adminEmail = "admin@batheja.com";
+    let adminUser = await User.findOne({ email: adminEmail });
+    if (!adminUser) {
+      const hashedPassword = await bcrypt.hash("admin123", 10);
+      adminUser = new User({
+        name: "Atelier Administrator",
+        email: adminEmail,
+        password: hashedPassword,
+        role: "admin"
+      });
+      await adminUser.save();
+      console.log("🛡️ Official Admin account created: admin@batheja.com (password: admin123)");
+    }
+  } catch (err) {
+    console.error("Admin seed error:", err.message);
+  }
+});
+
+// --- ANALYTICS ROUTES ---
+app.post('/api/analytics/search', async (req, res) => {
+  try {
+    const { term } = req.body;
+    if (!term || term.trim().length === 0) return res.status(400).json({ error: "Empty search term" });
+    
+    // Save exactly what the user searched
+    const log = new SearchLog({ term: term.trim().toLowerCase() });
+    await log.save();
+    
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/analytics/popular', [authMiddleware, adminMiddleware], async (req, res) => {
+  try {
+    // Aggregation pipeline to count occurrences of search terms
+    const popularSearches = await SearchLog.aggregate([
+      { $group: { _id: "$term", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 10 }
+    ]);
+    res.json(popularSearches);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // --- PRODUCTION SECURITY AUTH ROUTES ---
 
