@@ -207,8 +207,9 @@ app.post('/api/auth/send-verification-otp', async (req, res) => {
     const otpCode = generateOTP();
     const codeHash = await hashOTP(otpCode);
 
+    const pendingUserData = existingOtp?.pendingUserData || null;
     await OTP.deleteOne({ identifier: cleanIdentifier });
-    await new OTP({ identifier: cleanIdentifier, codeHash, attempts: 0, lastSentAt: new Date() }).save();
+    await new OTP({ identifier: cleanIdentifier, codeHash, attempts: 0, lastSentAt: new Date(), pendingUserData }).save();
 
     if (isEmail) {
       try {
