@@ -1,5 +1,4 @@
 require("dotenv").config();
-try { require("dns").setServers(["8.8.8.8", "1.1.1.1"]); } catch (e) {}
 const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
 cloudinary.config({
