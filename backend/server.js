@@ -3,9 +3,9 @@ try { require("dns").setServers(["8.8.8.8", "1.1.1.1"]); } catch (e) {}
 const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
 cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
+  cloud_name: process.env.CLOUD_NAME || "dkqcquur4",
+  api_key: process.env.API_KEY || "237426787582352",
+  api_secret: process.env.API_SECRET || "Q2maS0tHdUM2Fdh8OYDMGhrXoEI",
 });
 // ✅ correct setup
 const upload = multer({ dest: "uploads/" });
@@ -57,15 +57,11 @@ app.use((req, res, next) => {
   next();
 });
 
-const MONGO_URI = process.env.MONGO_URI;
-if (!MONGO_URI) {
-  console.error("Missing MONGO_URI in environment variables.");
-  process.exit(1);
-}
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://Yugam:Yugam006@cluster0.5dogq5t.mongodb.net/clothing-store?retryWrites=true&w=majority";
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+  .catch(err => console.error("MongoDB Connection Error:", err.message));
 
 const Product = require('./models/Product');
 const User = require('./models/User');
