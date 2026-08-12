@@ -88,10 +88,11 @@ const sendEmail = async ({ to, subject, html }) => {
 
   if (!process.env.EMAIL_USER && !process.env.RESEND_API_KEY) {
     console.error(`❌ [CRITICAL EMAIL ERROR] Neither EMAIL_USER/EMAIL_PASS nor RESEND_API_KEY is set in environment variables!`);
-    return false;
+  } else {
+    console.error(`❌ [CRITICAL EMAIL ERROR] Email dispatch attempted via available providers, but both failed.`);
   }
 
-  return true;
+  return false;
 };
 
 module.exports = sendEmail;

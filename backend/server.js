@@ -206,10 +206,13 @@ app.post('/api/auth/send-verification-otp', async (req, res) => {
     await OTP.deleteOne({ identifier: cleanIdentifier });
     await new OTP({ identifier: cleanIdentifier, codeHash, attempts: 0, lastSentAt: new Date(), pendingUserData }).save();
 
+    let emailSent = false;
+    let smsSent = false;
+
     if (isEmail) {
       try {
         const sendEmail = require('./utils/sendEmail');
-        await sendEmail({
+        emailSent = await sendEmail({
           to: cleanIdentifier,
           subject: "Batheja Garments - Security Verification Code",
           html: `
@@ -229,7 +232,7 @@ app.post('/api/auth/send-verification-otp', async (req, res) => {
     } else {
       try {
         const sendSMS = require('./utils/sendSMS');
-        await sendSMS({
+        smsSent = await sendSMS({
           to: cleanIdentifier,
           body: `Your Batheja Garments verification code is ${otpCode}. Expire in 5 min.`
         });
@@ -262,7 +265,15 @@ app.post('/api/auth/send-verification-otp', async (req, res) => {
       }
     }
 
-    res.json({ success: true, message: `Verification code generated for ${cleanIdentifier}` });
+    const isDev = process.env.NODE_ENV !== 'production' || process.env.SHOW_DEV_OTP === 'true';
+    const resPayload = {
+      success: true,
+      message: `Verification code generated for ${cleanIdentifier}`
+    };
+    if (isDev) {
+      resPayload.debugOtp = otpCode;
+    }
+    res.json(resPayload);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -470,10 +481,11 @@ app.post('/api/auth/register', async (req, res) => {
     console.log(`💾 [SIGNUP] Pending user data stored in OTP collection (User NOT created in DB until OTP verified)`);
 
     // Dispatch email with 6-digit code
+    let emailSent = false;
     try {
       console.log(`📧 [SIGNUP] Attempting email dispatch via Resend/SMTP to: ${cleanEmail}`);
       const sendEmail = require('./utils/sendEmail');
-      await sendEmail({
+      emailSent = await sendEmail({
         to: cleanEmail,
         subject: "Batheja Garments - Your Security Verification Code",
         html: `
@@ -487,19 +499,26 @@ app.post('/api/auth/register', async (req, res) => {
           </div>
         `
       });
-      console.log(`📧 [SIGNUP] Verification email dispatched successfully to ${cleanEmail}`);
+      console.log(`📧 [SIGNUP] Verification email dispatch status: ${emailSent}`);
     } catch (e) {
       console.error(`❌ [SIGNUP EMAIL DISPATCH ERROR]: ${e.message}`);
       console.log(`📋 [LOCAL DEV LOG] Verification Code for ${cleanEmail}: ${otpCode}`);
     }
 
     console.log(`✅ [SIGNUP] OTP process initialized - awaiting email verification code`);
-    res.json({
+    const isDev = process.env.NODE_ENV !== 'production' || process.env.SHOW_DEV_OTP === 'true';
+    const regPayload = {
       requireOtp: true,
       identifier: targetIdentifier,
       verificationMethod: 'email',
-      message: `Verification code sent to ${cleanEmail}! Please enter the 6-digit code sent to your email inbox.`
-    });
+      message: emailSent 
+        ? `Verification code sent to ${cleanEmail}! Please check your email inbox.` 
+        : `Verification code generated for ${cleanEmail}.`
+    };
+    if (isDev) {
+      regPayload.debugOtp = otpCode;
+    }
+    res.json(regPayload);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -572,9 +591,10 @@ app.post('/api/auth/login', async (req, res) => {
       await OTP.deleteOne({ identifier: user.email });
       await new OTP({ identifier: user.email, codeHash, attempts: 0, lastSentAt: new Date() }).save();
 
+      let emailSent = false;
       try {
         const sendEmail = require('./utils/sendEmail');
-        await sendEmail({
+        emailSent = await sendEmail({
           to: user.email,
           subject: "Batheja Garments - Verify Your Account",
           html: `
@@ -590,11 +610,16 @@ app.post('/api/auth/login', async (req, res) => {
         });
       } catch (e) {}
 
-      return res.status(403).json({
+      const isDev = process.env.NODE_ENV !== 'production' || process.env.SHOW_DEV_OTP === 'true';
+      const unverifiedRes = {
         error: "Please verify your email before logging in.",
         requireOtp: true,
         identifier: user.email
-      });
+      };
+      if (isDev) {
+        unverifiedRes.debugOtp = otpCode;
+      }
+      return res.status(403).json(unverifiedRes);
     }
 
 
@@ -694,7 +719,12 @@ app.post('/api/auth/forgot-password', async (req, res) => {
       }
     }
 
-    res.json({ success: true, message: `Password reset code sent to ${cleanIdentifier}` });
+    const isDev = process.env.NODE_ENV !== 'production' || process.env.SHOW_DEV_OTP === 'true';
+    const forgotRes = { success: true, message: `Password reset code sent to ${cleanIdentifier}` };
+    if (isDev) {
+      forgotRes.debugOtp = otpCode;
+    }
+    res.json(forgotRes);
   } catch (err) {
     console.error(`❌ [FORGOT PASSWORD ENDPOINT ERROR]: ${err.message}`);
     res.status(500).json({ error: err.message });

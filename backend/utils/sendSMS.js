@@ -28,7 +28,7 @@ const sendSMS = async ({ to, body }) => {
     console.log(`📱 [DEV SMS DISPATCH LOG] Text Message Target: ${formattedPhone}`);
     console.log(`📱 [DEV SMS BODY] ${body}`);
     console.log(`==================================================\n`);
-    return true; // Return true so registration/profile verification flow continues cleanly
+    return false;
   }
 };
 
